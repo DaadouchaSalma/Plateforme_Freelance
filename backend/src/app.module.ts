@@ -15,6 +15,9 @@ import { FeedbackModule } from './feedback/feedback.module';
 import { AdminModule } from './admin/admin.module';
 import { LienProfModule } from './lien-prof/lien-prof.module';
 import { FreelancerCompetenceModule } from './freelancer-competence/freelancer-competence.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -42,6 +45,8 @@ import { FreelancerCompetenceModule } from './freelancer-competence/freelancer-c
   AdminModule,
   LienProfModule,
   FreelancerCompetenceModule,
+  UserModule,
+  AuthModule,
 ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,15 +3,16 @@ import { Candidature } from 'src/candidature/candidature.entity';
 import { Feedback } from 'src/feedback/feedback.entity';
 import { FreelancerCompetence } from 'src/freelancer-competence/freelancer-competence.entity';
 import { LienProf } from 'src/lien-prof/lien-prof.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/user.entity';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
 export class Freelancer {
-  @Field(type => Int)
-  @PrimaryGeneratedColumn()
+  @Field()
+  @PrimaryGeneratedColumn('increment')
   id: number;
-
+  
   @Field()
   @Column()
   nom: string;
@@ -19,14 +20,6 @@ export class Freelancer {
   @Field()
   @Column()
   prenom: string;
-
-  @Field()
-  @Column()
-  email: string;
-
-  @Field()
-  @Column()
-  mdp: string;
 
   @Field()
   @Column()
@@ -54,4 +47,9 @@ export class Freelancer {
 
   @OneToMany(() => Feedback, feedback => feedback.receiverfreelancer)
   receivedFeedbacks: Feedback[];
+  
+  @Field(() => User)
+  @OneToOne(() => User, (user) => user.freelancer, { cascade: true })
+  @JoinColumn()
+  user: User;
 }

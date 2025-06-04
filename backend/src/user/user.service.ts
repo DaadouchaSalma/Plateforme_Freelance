@@ -16,14 +16,12 @@ export class UserService {
   }
 
   async create(data: { email: string; password: string; role: string }): Promise<User> {
-    const user = new User();
-    user.email = data.email;
-    user.password = await bcrypt.hash(data.password, 10);
-    /*if (!Object.values(UserRole).includes(data.role as UserRole)) {
-       throw new Error('Invalid user role');
-    }
-    user.role = data.role as UserRole;*/
-     user.role = data.role;
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const user = this.userRepository.create({
+      email: data.email,
+      password: hashedPassword,
+      role: data.role,
+    });
     return this.userRepository.save(user);
   }
 }

@@ -9,11 +9,25 @@ type User {
   role: String!
 }
 
+type Freelancer {
+  id: Float!
+  nom: String!
+  prenom: String!
+  photo: String!
+  bio: String
+  disponibilite: Boolean
+  user: User!
+}
+
 type Query {
+  allFreelancers: [Freelancer!]!
+  freelancerById(id: Int!): Freelancer
   hello: String!
 }
 
 type Mutation {
+  updateFreelancer(id: Int!, nom: String, prenom: String, photo: String, bio: String, disponibilite: Boolean): Freelancer!
   login(email: String!, password: String!): String!
-  register(email: String!, password: String!, role: String!): User!
+  registerClient(email: String!, password: String!, nom: String!, photo: String!): User!
+  registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: String!, bio: String): User!
 }

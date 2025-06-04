@@ -12,7 +12,6 @@ import { CandidatureModule } from './candidature/candidature.module';
 import { CompetenceModule } from './competence/competence.module';
 import { CategorieModule } from './categorie/categorie.module';
 import { FeedbackModule } from './feedback/feedback.module';
-import { AdminModule } from './admin/admin.module';
 import { LienProfModule } from './lien-prof/lien-prof.module';
 import { FreelancerCompetenceModule } from './freelancer-competence/freelancer-competence.module';
 import { UserModule } from './user/user.module';
@@ -42,7 +41,6 @@ import { AuthModule } from './auth/auth.module';
   CompetenceModule,
   CategorieModule,
   FeedbackModule,
-  AdminModule,
   LienProfModule,
   FreelancerCompetenceModule,
   UserModule,

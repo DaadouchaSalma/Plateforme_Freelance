@@ -1,6 +1,9 @@
 
-import React from "react";
+import React,{ useState } from "react";
+import { useMutation } from "@apollo/client";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LOGIN_MUTATION } from "../../graphql/mutations/login";
 import { faAngleLeft, faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookF, faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup } from '@themesberg/react-bootstrap';
@@ -11,6 +14,27 @@ import BgImage from "../../assets/img/illustrations/signin.svg";
 
 
 export default () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const history = useHistory();
+
+  const [login, { loading, error }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: (data) => {
+      const token = data.login;
+      localStorage.setItem("token", token); 
+      history.push("/dashboard/overview");  
+    },
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login({ variables: { email, password } });
+    } catch (err) {
+      console.error("Login error", err);
+    }
+  };
+
   return (
     <main>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
@@ -26,24 +50,25 @@ export default () => {
                 <div className="text-center text-md-center mb-4 mt-md-0">
                   <h3 className="mb-0">Sign in to our platform</h3>
                 </div>
-                <Form className="mt-4">
+                <Form className="mt-4" onSubmit={handleSubmit}>
                   <Form.Group id="email" className="mb-4">
                     <Form.Label>Your Email</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faEnvelope} />
                       </InputGroup.Text>
-                      <Form.Control autoFocus required type="email" placeholder="example@company.com" />
+                      <Form.Control autoFocus required type="email" placeholder="example@company.com" value={email}onChange={(e) => setEmail(e.target.value)} />
                     </InputGroup>
                   </Form.Group>
                   <Form.Group>
                     <Form.Group id="password" className="mb-4">
-                      <Form.Label>Your Password</Form.Label>
+                      <Form.Label>Mot De Passe</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
                           <FontAwesomeIcon icon={faUnlockAlt} />
                         </InputGroup.Text>
-                        <Form.Control required type="password" placeholder="Password" />
+                        <Form.Control required type="password" placeholder="Mot De Passe" value={password}
+                        onChange={(e) => setPassword(e.target.value)} />
                       </InputGroup>
                     </Form.Group>
                     <div className="d-flex justify-content-between align-items-center mb-4">
@@ -54,8 +79,9 @@ export default () => {
                       <Card.Link className="small text-end">Lost password?</Card.Link>
                     </div>
                   </Form.Group>
-                  <Button variant="primary" type="submit" className="w-100">
-                    Sign in
+                  {error && <div className="text-danger mb-3">Login failed: {error.message}</div>}
+                  <Button variant="primary" type="submit" className="w-100" disabled={loading}  >
+                    {loading ? "Logging in..." : "Sign in"}
                   </Button>
                 </Form>
 

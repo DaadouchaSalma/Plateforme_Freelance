@@ -5,6 +5,11 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from '../user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/user/user.entity';
+import { Client } from 'src/client/client.entity';
+import { Freelancer } from 'src/freelancer/freelancer.entity';
+import { UserService } from 'src/user/user.service';
 
 
 @Module({
@@ -15,7 +20,8 @@ import { UserModule } from '../user/user.module';
       signOptions: { expiresIn: '7d' },
     }),
     UserModule,
+    TypeOrmModule.forFeature([User, Client, Freelancer]),
   ],
-  providers: [AuthService, AuthResolver, JwtStrategy],
+  providers: [AuthService, AuthResolver, JwtStrategy, UserService],
 })
 export class AuthModule {}

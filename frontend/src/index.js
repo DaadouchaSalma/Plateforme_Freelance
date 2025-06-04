@@ -16,6 +16,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client";
 
 // core styles
 import "./scss/volt.scss";
@@ -25,11 +26,22 @@ import "react-datetime/css/react-datetime.css";
 
 import HomePage from "./pages/HomePage";
 import ScrollToTop from "./components/ScrollToTop";
+import { client } from "./apolloClient";
 
-ReactDOM.render(
+/*ReactDOM.render(
   <HashRouter>
     <ScrollToTop />
     <HomePage />
   </HashRouter>,
+  document.getElementById("root")
+  
+);*/
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <HashRouter>
+      <ScrollToTop />
+      <HomePage />
+    </HashRouter>
+  </ApolloProvider>,
   document.getElementById("root")
 );

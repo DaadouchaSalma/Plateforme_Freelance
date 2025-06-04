@@ -2,6 +2,25 @@
 # yarn lockfile v1
 
 
+"@apollo/client@^3.13.8":
+  version "3.13.8"
+  resolved "https://registry.npmjs.org/@apollo/client/-/client-3.13.8.tgz"
+  integrity sha512-YM9lQpm0VfVco4DSyKooHS/fDTiKQcCHfxr7i3iL6a0kP/jNO5+4NFK6vtRDxaYisd5BrwOZHLJpPBnvRVpKPg==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
+    "@wry/caches" "^1.0.0"
+    "@wry/equality" "^0.5.6"
+    "@wry/trie" "^0.5.0"
+    graphql-tag "^2.12.6"
+    hoist-non-react-statics "^3.3.2"
+    optimism "^0.18.0"
+    prop-types "^15.7.2"
+    rehackt "^0.1.0"
+    symbol-observable "^4.0.0"
+    ts-invariant "^0.10.3"
+    tslib "^2.3.0"
+    zen-observable-ts "^1.2.5"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.8.3":
   version "7.14.5"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.14.5.tgz"
@@ -1240,6 +1259,11 @@
   dependencies:
     prop-types "^15.8.1"
 
+"@graphql-typed-document-node/core@^3.1.1":
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/@graphql-typed-document-node/core/-/core-3.2.0.tgz"
+  integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.npmjs.org/@hapi/address/-/address-2.1.4.tgz"
@@ -2097,6 +2121,34 @@
     "@webassemblyjs/ast" "1.8.5"
     "@webassemblyjs/wast-parser" "1.8.5"
     "@xtuc/long" "4.2.2"
+
+"@wry/caches@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@wry/caches/-/caches-1.0.1.tgz"
+  integrity sha512-bXuaUNLVVkD20wcGBWRyo7j9N3TxePEWFZj2Y+r9OoUzfqmavM84+mFykRicNsBqatba5JLay1t48wxaXaWnlA==
+  dependencies:
+    tslib "^2.3.0"
+
+"@wry/context@^0.7.0":
+  version "0.7.4"
+  resolved "https://registry.npmjs.org/@wry/context/-/context-0.7.4.tgz"
+  integrity sha512-jmT7Sb4ZQWI5iyu3lobQxICu2nC/vbUhP0vIdd6tHC9PTfenmRmuIFqktc6GH9cgi+ZHnsLWPvfSvc4DrYmKiQ==
+  dependencies:
+    tslib "^2.3.0"
+
+"@wry/equality@^0.5.6":
+  version "0.5.7"
+  resolved "https://registry.npmjs.org/@wry/equality/-/equality-0.5.7.tgz"
+  integrity sha512-BRFORjsTuQv5gxcXsuDXx6oGRhuVsEGwZy6LOzRRfgu+eSfxbhUQ9L9YtSEIuIjY/o7g3iWFjrc5eSY1GXP2Dw==
+  dependencies:
+    tslib "^2.3.0"
+
+"@wry/trie@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@wry/trie/-/trie-0.5.0.tgz"
+  integrity sha512-FNoYzHawTMk/6KMQoEG5O4PuioX19UbwdQKF44yw0nLfOypfQdjtfZzo/UIJWAJ23sNIFbD1Ug9lbaDGMwbqQA==
+  dependencies:
+    tslib "^2.3.0"
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -5492,6 +5544,18 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.6.tgz"
   integrity sha512-nTnJ528pbqxYanhpDYsi4Rd8MAeaBA67+RZ10CM1m3bTAVFEDcd5AuA4a6W5YkGZ1iNXHzZz8T6TBKLeBuNriQ==
 
+graphql-tag@^2.12.6:
+  version "2.12.6"
+  resolved "https://registry.npmjs.org/graphql-tag/-/graphql-tag-2.12.6.tgz"
+  integrity sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==
+  dependencies:
+    tslib "^2.1.0"
+
+"graphql@^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "graphql@^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0", "graphql@^15.0.0 || ^16.0.0", graphql@^16.11.0:
+  version "16.11.0"
+  resolved "https://registry.npmjs.org/graphql/-/graphql-16.11.0.tgz"
+  integrity sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==
+
 growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/growly/-/growly-1.3.0.tgz"
@@ -5641,7 +5705,7 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.1.0:
+hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -6340,7 +6404,7 @@ isarray@~1.0.0:
 isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
-  integrity sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=
+  integrity sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==
 
 isarray@1.0.0:
   version "1.0.0"
@@ -7938,6 +8002,16 @@ opn@^5.5.0:
   dependencies:
     is-wsl "^1.1.0"
 
+optimism@^0.18.0:
+  version "0.18.1"
+  resolved "https://registry.npmjs.org/optimism/-/optimism-0.18.1.tgz"
+  integrity sha512-mLXNwWPa9dgFyDqkNi54sjDyNJ9/fTI6WGBLgnXku1vdKY/jovHfZT5r+aiVeFFLOz+foPNOm5YJ4mqgld2GBQ==
+  dependencies:
+    "@wry/caches" "^1.0.0"
+    "@wry/context" "^0.7.0"
+    "@wry/trie" "^0.5.0"
+    tslib "^2.3.0"
+
 optimize-css-assets-webpack-plugin@5.0.3:
   version "5.0.3"
   resolved "https://registry.npmjs.org/optimize-css-assets-webpack-plugin/-/optimize-css-assets-webpack-plugin-5.0.3.tgz"
@@ -8207,9 +8281,9 @@ path-parse@^1.0.6:
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 path-to-regexp@^1.7.0:
-  version "1.8.0"
-  resolved "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-1.8.0.tgz"
-  integrity sha512-n43JRhlUKUAlibEJhPeir1ncUID16QnEjNpwzNdO3Lm4ywrBpBZ5oLD0I6br9evr1Y9JTqwRtAh7JLoOzAQdVA==
+  version "1.9.0"
+  resolved "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-1.9.0.tgz"
+  integrity sha512-xIp7/apCFJuUHdDLWe8O1HIkb0kQrOMb/0u6FXQjemHn/ii5LrIzU6bdECnsiTF/GjZkMEKg1xdiZwNqDYlZ6g==
   dependencies:
     isarray "0.0.1"
 
@@ -9364,7 +9438,7 @@ react-dev-utils@^10.2.1:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@*, "react-dom@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0", react-dom@^16.0.0, react-dom@^16.13.1, react-dom@>=16.3.0, react-dom@>=16.6.0, react-dom@>=16.8.0:
+react-dom@*, "react-dom@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0", react-dom@^16.0.0, react-dom@^16.13.1, "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc", react-dom@>=16.3.0, react-dom@>=16.6.0, react-dom@>=16.8.0:
   version "16.14.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.14.0.tgz"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -9559,7 +9633,7 @@ react-transition-group@^4.4.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@*, "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.9 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0", "react@^15.3.0 || ^16.0.0 || ^17.0.0", react@^16.0.0, react@^16.13.1, react@^16.14.0, react@^16.5.0, react@>=0.14.0, react@>=0.14.9, react@>=15, react@>=15.0.0, react@>=16.3.0, react@>=16.3.2, react@>=16.6.0, react@>=16.8.0, react@>=16.x:
+react@*, "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.9 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0", "react@^15.3.0 || ^16.0.0 || ^17.0.0", react@^16.0.0, react@^16.13.1, react@^16.14.0, react@^16.5.0, "react@^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc", react@>=0.14.0, react@>=0.14.9, react@>=15, react@>=15.0.0, react@>=16.3.0, react@>=16.3.2, react@>=16.6.0, react@>=16.8.0, react@>=16.x:
   version "16.14.0"
   resolved "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
@@ -9759,6 +9833,11 @@ regjsparser@^0.6.4:
   integrity sha512-ZqbNRz1SNjLAiYuwY0zoXW8Ne675IX5q+YHioAGbCw4X96Mjl2+dcX9B2ciaeyYjViDAfvIjFpQjJgLttTEERQ==
   dependencies:
     jsesc "~0.5.0"
+
+rehackt@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/rehackt/-/rehackt-0.1.0.tgz"
+  integrity sha512-7kRDOuLHB87D/JESKxQoRwv4DzbIdwkAGQ7p6QKGdVlY1IZheUnVhlk/4UZlNUVxdAXpyxikE3URsG067ybVzw==
 
 relateurl@^0.2.7:
   version "0.2.7"
@@ -10866,6 +10945,11 @@ svgo@^1.0.0, svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+symbol-observable@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/symbol-observable/-/symbol-observable-4.0.0.tgz"
+  integrity sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==
+
 symbol-tree@^3.2.2:
   version "3.2.4"
   resolved "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"
@@ -10976,9 +11060,9 @@ timsort@^0.3.0:
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
 tiny-invariant@^1.0.2:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/tiny-invariant/-/tiny-invariant-1.1.0.tgz"
-  integrity sha512-ytxQvrb1cPc9WBEI/HSeYYoGD0kWnGEOR8RY6KomWLBVhqz0RgTwVO9dLrGz7dC+nN9llyI7OKAgRq8Vq4ZBSw==
+  version "1.3.3"
+  resolved "https://registry.npmjs.org/tiny-invariant/-/tiny-invariant-1.3.3.tgz"
+  integrity sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==
 
 tiny-warning@^1.0.0, tiny-warning@^1.0.3:
   version "1.0.3"
@@ -11064,6 +11148,13 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
+ts-invariant@^0.10.3:
+  version "0.10.3"
+  resolved "https://registry.npmjs.org/ts-invariant/-/ts-invariant-0.10.3.tgz"
+  integrity sha512-uivwYcQaxAucv1CzRp2n/QdYPo4ILf9VXgH19zEIjFx2EJufV16P0JtJVpYHy89DItG6Kwj2oIUjrcK5au+4tQ==
+  dependencies:
+    tslib "^2.1.0"
+
 ts-pnp@^1.1.6, ts-pnp@1.1.6:
   version "1.1.6"
   resolved "https://registry.npmjs.org/ts-pnp/-/ts-pnp-1.1.6.tgz"
@@ -11079,7 +11170,7 @@ tslib@^1.9.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.3:
+tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz"
   integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
@@ -11913,3 +12004,15 @@ yargs@^13.3.0, yargs@^13.3.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^13.1.2"
+
+zen-observable-ts@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.npmjs.org/zen-observable-ts/-/zen-observable-ts-1.2.5.tgz"
+  integrity sha512-QZWQekv6iB72Naeake9hS1KxHlotfRpe+WGNbNx5/ta+R3DNjVO2bswf63gXlWDcs+EMd7XY8HfVQyP1X6T4Zg==
+  dependencies:
+    zen-observable "0.8.15"
+
+zen-observable@0.8.15:
+  version "0.8.15"
+  resolved "https://registry.npmjs.org/zen-observable/-/zen-observable-0.8.15.tgz"
+  integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==

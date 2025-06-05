@@ -30,7 +30,7 @@ export class AuthResolver {
   ) {
     const user = await this.authService.validateUser(email, password);
     const result = await this.authService.login(user);
-    return result.access_token;
+    return result.access_token + ' role ' + result.user.role;
   }
 
    @Mutation(() => User)
@@ -63,5 +63,4 @@ export class AuthResolver {
 
     return user;
   }
-
 }

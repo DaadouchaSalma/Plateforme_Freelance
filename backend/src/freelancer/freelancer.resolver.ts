@@ -1,6 +1,12 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Freelancer } from './freelancer.entity';
 import { FreelancerService } from './freelancer.service';
+import { UseGuards } from '@nestjs/common';
+import { Roles } from 'src/auth/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { User } from 'src/user/user.entity';
 
 @Resolver()
 export class FreelancerResolver {
@@ -14,22 +20,29 @@ export class FreelancerResolver {
   async freelancerById(@Args('id', { type: () => Int }) id: number): Promise<Freelancer | null> {
     return this.freelancerService.findOneById(id);
   }
+
+   @UseGuards(JwtAuthGuard, RolesGuard)
+   @Roles('FREELANCER')
    @Mutation(() => Freelancer)
   async updateFreelancer(
-    @Args('id', { type: () => Int }) id: number,
+    @CurrentUser() user: User,
     @Args('nom', { nullable: true }) nom?: string,
     @Args('prenom', { nullable: true }) prenom?: string,
     @Args('photo', { nullable: true }) photo?: string,
     @Args('bio', { nullable: true }) bio?: string,
     @Args('disponibilite', { nullable: true }) disponibilite?: boolean,
   ): Promise<Freelancer> {
-    const freelancer = await this.freelancerService.findOneById(id);
+    const freelancer = await this.freelancerService.findByUserId(user.id);
+
 
     if (!freelancer) {
-      throw new Error('Freelancer not found');
-    }
+    throw new Error('Freelancer not found');
+  }
 
-    // mise à jour des champs conditionnellement
+  if (user.role !== 'FREELANCER') {
+    throw new Error('Not authorized to update this freelancer');
+  }
+
     if (nom !== undefined) freelancer.nom = nom;
     if (prenom !== undefined) freelancer.prenom = prenom;
     if (photo !== undefined) freelancer.photo = photo;

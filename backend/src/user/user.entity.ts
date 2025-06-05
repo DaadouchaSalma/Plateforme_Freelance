@@ -29,8 +29,8 @@ export class User {
 
 
   @OneToOne(() => Freelancer, (freelancer) => freelancer.user, { nullable: true })
-  freelancer?: Freelancer;
+  freelancer: Freelancer;
 
   @OneToOne(() => Client, (client) => client.user, { nullable: true })
-  client?: Client;
+  client: Client;
 }

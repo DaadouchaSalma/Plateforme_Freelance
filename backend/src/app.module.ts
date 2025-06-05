@@ -33,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
   driver: ApolloDriver,
   autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
   playground: true,
+  context: ({ req, res }) => ({ req, res }),
   }),
   FreelancerModule,
   ClientModule,

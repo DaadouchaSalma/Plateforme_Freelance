@@ -23,4 +23,11 @@ export class FreelancerService {
 async save(freelancer: Freelancer): Promise<Freelancer> {
   return this.freelancerRepository.save(freelancer);
 }
+
+async findByUserId(userId: number): Promise<Freelancer | null> {
+  return this.freelancerRepository.findOne({
+    where: { user: { id: userId } },
+    relations: ['user'],
+  });
+}
 }

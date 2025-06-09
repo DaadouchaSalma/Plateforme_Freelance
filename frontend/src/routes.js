@@ -3,6 +3,7 @@ export const Routes = {
     // pages
     Presentation: { path: "/" },
     DashboardOverview: { path: "/dashboard/overview" },
+    DashboardAdmin: { path: "/dashboard/admin" },
     Transactions: { path: "/transactions" },
     Settings: { path: "/settings" },
     Upgrade: { path: "/upgrade" },
@@ -45,6 +46,11 @@ export const Routes = {
     Tooltips: { path: "/components/tooltips" },
     Toasts: { path: "/components/toasts" },
     WidgetsComponent: { path: "/components/widgets" },
+  
+    //client
+    ClientUpdateProfile: { path: "/client/update"},
+    ClientById: { path: "/clientprofile/:id"},
+
     //offre
     OffreAjout:{path:"/offre/ajout"},
     OffreListeClient:{path:"/offre/listeClient"},

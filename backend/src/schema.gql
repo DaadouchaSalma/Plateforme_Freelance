@@ -18,6 +18,12 @@ type Client {
   id: Float!
   nom: String!
   photo: String!
+  about: String!
+  adresse: String!
+  codePostal: String!
+  tel: String!
+  siteweb: String!
+  domaine: String!
   user: User!
 }
 
@@ -57,6 +63,9 @@ type Freelancer {
 type Query {
   allFreelancers: [Freelancer!]!
   freelancerById(id: Int!): Freelancer
+  allClients: [Client!]!
+  clientById(id: Int!): Client
+  me: Client
   getOfferById(id: Int!): Offer!
   offers: [Offer!]!
   offersForClient: [Offer!]!
@@ -67,12 +76,13 @@ type Query {
 
 type Mutation {
   updateFreelancer(nom: String, prenom: String, photo: String, bio: String, disponibilite: Boolean): Freelancer!
+  updateClient(nom: String, photo: String, about: String, adresse: String, codePostal: String, tel: String, siteweb: String, domaine: String): Client!
   createOffer(title: String!, description: String!, budget: Float!, startDate: String!, endDate: String!, status: String!, competenceIds: [Int!]!, categorieId: Int!): Offer!
   updateOffer(id: Int!, title: String, description: String, budget: Int, startDate: DateTime, endDate: DateTime, status: String, categorieId: Int): Offer!
   deleteOffer(offerId: Int!): Boolean!
   createCompetence(nom: String!): Competence!
   createCategorie(title: String!): Categorie!
   login(email: String!, password: String!): String!
-  registerClient(email: String!, password: String!, nom: String!, photo: String!): User!
+  registerClient(email: String!, password: String!, nom: String!, photo: String!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
   registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: String!, bio: String): User!
 }

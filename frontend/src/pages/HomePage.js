@@ -48,6 +48,11 @@ import Tables from "./components/Tables";
 import Tabs from "./components/Tabs";
 import Tooltips from "./components/Tooltips";
 import Toasts from "./components/Toasts";
+import ajoutOffre from './components/offre/ajoutOffre';
+import listeOffreClient from "./components/offre/listeOffreClient";
+import updateOffre from "./components/offre/updateOffre";
+import listeOffreFreelancer from "./components/offre/listeOffreFreelancer"
+
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -142,6 +147,11 @@ export default () => (
     <RouteWithSidebar exact path={Routes.DocsFolderStructure.path} component={DocsFolderStructure} />
     <RouteWithSidebar exact path={Routes.DocsBuild.path} component={DocsBuild} />
     <RouteWithSidebar exact path={Routes.DocsChangelog.path} component={DocsChangelog} />
+
+    <RouteWithSidebar exact path={Routes.OffreAjout.path} component={ajoutOffre} />
+    <RouteWithSidebar exact path={Routes.OffreListeClient.path} component={listeOffreClient} />
+    <RouteWithSidebar exact path={Routes.OffreUpdate.path} component={updateOffre} />
+    <RouteWithLoader exact path={Routes.OffreListeFreelancer.path} component={listeOffreFreelancer} />
 
     <Redirect to={Routes.NotFound.path} />
   </Switch>

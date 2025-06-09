@@ -1,0 +1,33 @@
+.custom-table {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
+}
+
+.custom-table thead {
+  font-weight: 600;
+}
+
+.custom-table td,
+.custom-table th {
+  vertical-align: middle;
+  padding: 1rem;
+}
+
+.custom-table .badge {
+  font-size: 0.9rem;
+  padding: 0.5em 0.8em;
+}
+.modal-top .modal-dialog {
+  margin-top: 50px; 
+}
+
+.badge {
+  padding: 0.5em 0.8em;
+  font-weight: bold;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}

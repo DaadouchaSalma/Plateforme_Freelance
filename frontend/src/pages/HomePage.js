@@ -50,11 +50,17 @@ import Tables from "./components/Tables";
 import Tabs from "./components/Tabs";
 import Tooltips from "./components/Tooltips";
 import Toasts from "./components/Toasts";
+import ajoutCandidature from './components/candidature/ajoutCandidature';
+import MyCandidatures from './components/candidature/listCandidatureFreelancer';
+import ClientCandidaturesList from './components/candidature/listCandidatureClient';
+import FreelancersList from './components/freelancer/listeFreelancerA';
+import Inscription from './examples/Register';
 import updateProfile from '../components/client/updateProfile';
 import ajoutOffre from './components/offre/ajoutOffre';
 import listeOffreClient from "./components/offre/listeOffreClient";
 import updateOffre from "./components/offre/updateOffre";
 import listeOffreFreelancer from "./components/offre/listeOffreFreelancer"
+
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -107,10 +113,22 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 export default () => (
   <Switch>
+
+    
+    {/* Candidature*/}
+    <RouteWithLoader exact path={Routes.AjoutCandidature.path} component={ajoutCandidature} />
+    <RouteWithLoader exact path={Routes.ListCandidatureF.path} component={MyCandidatures} />
+    <RouteWithSidebar exact path={Routes.ListCandidatureC.path} component={ClientCandidaturesList} />
+
+     {/* Freelancer */}
+     <RouteWithSidebar exact path={Routes.ListFreelancer.path} component={FreelancersList} />
+
+
     <RouteWithLoader exact path={Routes.ClientById.path} component={ClientByID} />
     <RouteWithLoader exact path={Routes.Presentation.path} component={Presentation} />
     <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
     <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
+    <RouteWithLoader exact path={Routes.Register.path} component={Inscription} />
     <RouteWithLoader exact path={Routes.ForgotPassword.path} component={ForgotPassword} />
     <RouteWithLoader exact path={Routes.ResetPassword.path} component={ResetPassword} />
     <RouteWithLoader exact path={Routes.Lock.path} component={Lock} />

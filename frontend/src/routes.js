@@ -12,6 +12,7 @@ export const Routes = {
     Invoice: { path: "/examples/invoice" },
     Signin: { path: "/examples/sign-in" },
     Signup: { path: "/examples/sign-up" },
+    Register: { path: "/examples/register" },
     ForgotPassword: { path: "/examples/forgot-password" },
     ResetPassword: { path: "/examples/reset-password" },
     Lock: { path: "/examples/lock" },
@@ -46,6 +47,16 @@ export const Routes = {
     Tooltips: { path: "/components/tooltips" },
     Toasts: { path: "/components/toasts" },
     WidgetsComponent: { path: "/components/widgets" },
+
+
+    //Candidature 
+    AjoutCandidature: { path: "/candidature/ajout" },
+    ListCandidatureF: { path: "/candidature/listF" },
+    ListCandidatureC: { path: "/candidature/listC" },
+
+    //Freelancer
+    ListFreelancer: { path: "/freelancer/listF" },
+
   
     //client
     ClientUpdateProfile: { path: "/client/update"},
@@ -56,4 +67,5 @@ export const Routes = {
     OffreListeClient:{path:"/offre/listeClient"},
     OffreUpdate:{path:"/offre/update/:id"},
     OffreListeFreelancer:{path:"/offre/listeOffreFreelancer"}
+
 };

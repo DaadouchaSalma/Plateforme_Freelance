@@ -35,6 +35,7 @@ export class Offer {
   @Field()
   @Column()
   status: string;
+  
   @Field(() => Client)
   @ManyToOne(() => Client, client => client.offers)
   client: Client;

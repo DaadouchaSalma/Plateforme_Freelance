@@ -16,6 +16,9 @@ import { LienProfModule } from './lien-prof/lien-prof.module';
 import { FreelancerCompetenceModule } from './freelancer-competence/freelancer-competence.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+// import { ExperienceModule } from './experience/experience.module';
+import { ExperienceModule } from './experience/experience.module';
+// import { UploadScalar } from './common/scalars/upload.scalar';
 
 
 @Module({
@@ -32,6 +35,7 @@ import { AuthModule } from './auth/auth.module';
   GraphQLModule.forRoot<ApolloDriverConfig>({
   driver: ApolloDriver,
   autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+  // csrfPrevention: false,
   playground: true,
   context: ({ req, res }) => ({ req, res }),
   }),
@@ -46,6 +50,7 @@ import { AuthModule } from './auth/auth.module';
   FreelancerCompetenceModule,
   UserModule,
   AuthModule,
+  ExperienceModule,
 ],
   controllers: [AppController],
   providers: [AppService],

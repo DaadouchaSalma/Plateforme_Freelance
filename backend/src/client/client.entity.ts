@@ -18,6 +18,30 @@ export class Client  {
   @Column()
   photo: string;
 
+  @Field()
+  @Column({ type: 'text' })
+  about: string;
+
+  @Field()
+  @Column()
+  adresse: string;
+
+  @Field()
+  @Column()
+  codePostal: string;
+
+  @Field()
+  @Column()
+  tel: string;
+
+  @Field()
+  @Column()
+  siteweb: string;
+
+  @Field()
+  @Column()
+  domaine: string;
+
   @OneToMany(() => Offer, offer => offer.client)
   offers: Offer[];
 

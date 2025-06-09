@@ -9,7 +9,9 @@ import { Freelancer } from 'src/freelancer/freelancer.entity';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { FileUpload, GraphQLUpload } from 'graphql-upload-minimal';
-
+import { CurrentUser } from './current-user.decorator';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 
 @Resolver()
@@ -24,10 +26,7 @@ export class AuthResolver {
     @InjectRepository(Freelancer)
     private readonly freelancerRepository: Repository<Freelancer>,
   ) {}
- @Query(() => String)
-  hello(): string {
-    return 'Hello world!';
-  }
+
   @Mutation(() => String)
   async login(
     @Args('email') email: string,
@@ -44,10 +43,16 @@ export class AuthResolver {
     @Args('password') password: string,
     @Args('nom') nom: string,
     @Args('photo') photo: string,
+    @Args('adresse') adresse: string,
+    @Args('about') about: string,
+    @Args('codePostal') codePostal: string,
+    @Args('tel') tel: string,
+    @Args('siteweb') siteweb: string,
+    @Args('domaine') domaine: string,
   ): Promise<User> {
     const user = await this.userService.create({ email, password, role: 'CLIENT' });
 
-    const client = this.clientRepository.create({ nom, photo, user });
+    const client = this.clientRepository.create({ nom, photo, about, adresse, codePostal, tel, siteweb, domaine, user });
     await this.clientRepository.save(client);
 
     return user;
@@ -113,45 +118,5 @@ export class AuthResolver {
 
     return user;
   }
-//  @Mutation(() => User)
-//   async registerFreelancer(
-//     @Args('email') email: string,
-//     @Args('password') password: string,
-//     @Args('nom') nom: string,
-//     @Args('prenom') prenom: string,
-//     @Args({ name: 'photo', type: () => GraphQLUpload }) photo: FileUpload, 
-//     @Args('bio', { nullable: true }) bio?: string,
-//   ): Promise<User> {
-//     const { createReadStream, filename } = await photo;
-
-//     const path = join(__dirname, '..', '..', 'uploads', filename);
-//     const stream = createReadStream();
-//     const writeStream = createWriteStream(path);
-
-//     await new Promise<void>((resolve, reject) =>
-//       stream
-//         .pipe(writeStream)
-//         .on('finish', () => resolve())
-//         .on('error', reject),
-//     );
-
-//     // Ici, 'photoPath' est le chemin/nom à enregistrer en DB
-//     const photoPath = `uploads/${filename}`;
-
-//     const user = await this.userService.create({ email, password, role: 'FREELANCER' });
-
-//     const freelancer = this.freelancerRepository.create({
-//       nom,
-//       prenom,
-//       photo: photoPath,
-//       bio,
-//       user,
-//     });
-//     await this.freelancerRepository.save(freelancer);
-
-//     return user;
-//   }
-
-
 
 }

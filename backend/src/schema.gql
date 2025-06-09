@@ -2,6 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+
 type Experience {
   id: Float!
   nomSociete: String!
@@ -16,6 +17,7 @@ type Categorie {
   id: Float!
   title: String!
 }
+
 
 type Feedback {
   id: Float!
@@ -40,8 +42,20 @@ type Client {
   id: Float!
   nom: String!
   photo: String!
+  about: String!
+  adresse: String!
+  codePostal: String!
+  tel: String!
+  siteweb: String!
+  domaine: String!
   user: User!
 }
+
+type Competence {
+  id: Int!
+  nom: String!
+}
+
 
 type Offer {
   id: Float!
@@ -81,7 +95,14 @@ type LienProf {
   id: Int!
   type: String!
   url: String!
+  competences: [Competence!]!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 
 type Freelancer {
   id: Float!
@@ -103,6 +124,14 @@ type Query {
   freelancerById(id: Int!): Freelancer
   myCandidatures: [Candidature!]!
   candidaturesByOffre(offreId: Int!): [Candidature!]!
+  allClients: [Client!]!
+  clientById(id: Int!): Client
+  me: Client
+  getOfferById(id: Int!): Offer!
+  offers: [Offer!]!
+  offersForClient: [Offer!]!
+  getCompetences: [Competence!]!
+  getAllCategories: [Categorie!]!
   hello: String!
 }
 
@@ -112,9 +141,16 @@ type Mutation {
   accepterCandidature(id: Int!): Candidature!
   rejeterCandidature(id: Int!): Candidature!
   createCandidature(input: MinimalCandidatureInput!): Candidature!
-  login(email: String!, password: String!): String!
-  registerClient(email: String!, password: String!, nom: String!, photo: String!): User!
   registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: Upload!, bio: String): User!
+  updateClient(nom: String, photo: String, about: String, adresse: String, codePostal: String, tel: String, siteweb: String, domaine: String): Client!
+  createOffer(title: String!, description: String!, budget: Float!, startDate: String!, endDate: String!, status: String!, competenceIds: [Int!]!, categorieId: Int!): Offer!
+  updateOffer(id: Int!, title: String, description: String, budget: Int, startDate: DateTime, endDate: DateTime, status: String, categorieId: Int): Offer!
+  deleteOffer(offerId: Int!): Boolean!
+  createCompetence(nom: String!): Competence!
+  createCategorie(title: String!): Categorie!
+  login(email: String!, password: String!): String!
+  registerClient(email: String!, password: String!, nom: String!, photo: String!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
+  
 }
 
 input MinimalCandidatureInput {
@@ -135,3 +171,4 @@ input ExperienceInput {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+

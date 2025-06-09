@@ -16,6 +16,8 @@ export class FreelancerResolver {
   async allFreelancers(): Promise<Freelancer[]> {
     return this.freelancerService.findAll();
   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('CLIENT')
   @Query(() => Freelancer, { nullable: true })
   async freelancerById(@Args('id', { type: () => Int }) id: number): Promise<Freelancer | null> {
     return this.freelancerService.findOneById(id);

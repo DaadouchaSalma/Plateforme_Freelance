@@ -3,6 +3,7 @@ export const Routes = {
     // pages
     Presentation: { path: "/" },
     DashboardOverview: { path: "/dashboard/overview" },
+    DashboardAdmin: { path: "/dashboard/admin" },
     Transactions: { path: "/transactions" },
     Settings: { path: "/settings" },
     Upgrade: { path: "/upgrade" },
@@ -55,4 +56,16 @@ export const Routes = {
 
     //Freelancer
     ListFreelancer: { path: "/freelancer/listF" },
+
+  
+    //client
+    ClientUpdateProfile: { path: "/client/update"},
+    ClientById: { path: "/clientprofile/:id"},
+
+    //offre
+    OffreAjout:{path:"/offre/ajout"},
+    OffreListeClient:{path:"/offre/listeClient"},
+    OffreUpdate:{path:"/offre/update/:id"},
+    OffreListeFreelancer:{path:"/offre/listeOffreFreelancer"}
+
 };

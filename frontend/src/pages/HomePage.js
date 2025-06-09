@@ -3,9 +3,11 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Routes } from "../routes";
 
 // pages
+import ClientByID from "../components/client/clientById"
 import Presentation from "./Presentation";
 import Upgrade from "./Upgrade";
 import DashboardOverview from "./dashboard/DashboardOverview";
+import DashboardAdmin from "./dashboard/DashboardAdmin";
 import Transactions from "./Transactions";
 import Settings from "./Settings";
 import BootstrapTables from "./tables/BootstrapTables";
@@ -53,6 +55,12 @@ import MyCandidatures from './components/candidature/listCandidatureFreelancer';
 import ClientCandidaturesList from './components/candidature/listCandidatureClient';
 import FreelancersList from './components/freelancer/listeFreelancerA';
 import Inscription from './examples/Register';
+import updateProfile from '../components/client/updateProfile';
+import ajoutOffre from './components/offre/ajoutOffre';
+import listeOffreClient from "./components/offre/listeOffreClient";
+import updateOffre from "./components/offre/updateOffre";
+import listeOffreFreelancer from "./components/offre/listeOffreFreelancer"
+
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -105,6 +113,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 export default () => (
   <Switch>
+
     
     {/* Candidature*/}
     <RouteWithLoader exact path={Routes.AjoutCandidature.path} component={ajoutCandidature} />
@@ -114,6 +123,8 @@ export default () => (
      {/* Freelancer */}
      <RouteWithSidebar exact path={Routes.ListFreelancer.path} component={FreelancersList} />
 
+
+    <RouteWithLoader exact path={Routes.ClientById.path} component={ClientByID} />
     <RouteWithLoader exact path={Routes.Presentation.path} component={Presentation} />
     <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
     <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
@@ -125,7 +136,9 @@ export default () => (
     <RouteWithLoader exact path={Routes.ServerError.path} component={ServerError} />
 
     {/* pages */}
+    <RouteWithSidebar exact path={Routes.ClientUpdateProfile.path} component={updateProfile} />
     <RouteWithSidebar exact path={Routes.DashboardOverview.path} component={DashboardOverview} />
+    <RouteWithSidebar exact path={Routes.DashboardAdmin.path} component={DashboardAdmin} />
     <RouteWithSidebar exact path={Routes.Upgrade.path} component={Upgrade} />
     <RouteWithSidebar exact path={Routes.Transactions.path} component={Transactions} />
     <RouteWithSidebar exact path={Routes.Settings.path} component={Settings} />
@@ -157,6 +170,11 @@ export default () => (
     <RouteWithSidebar exact path={Routes.DocsFolderStructure.path} component={DocsFolderStructure} />
     <RouteWithSidebar exact path={Routes.DocsBuild.path} component={DocsBuild} />
     <RouteWithSidebar exact path={Routes.DocsChangelog.path} component={DocsChangelog} />
+
+    <RouteWithSidebar exact path={Routes.OffreAjout.path} component={ajoutOffre} />
+    <RouteWithSidebar exact path={Routes.OffreListeClient.path} component={listeOffreClient} />
+    <RouteWithSidebar exact path={Routes.OffreUpdate.path} component={updateOffre} />
+    <RouteWithLoader exact path={Routes.OffreListeFreelancer.path} component={listeOffreFreelancer} />
 
     <Redirect to={Routes.NotFound.path} />
   </Switch>

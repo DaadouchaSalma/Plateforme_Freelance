@@ -2,7 +2,8 @@ import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Candidature } from 'src/candidature/candidature.entity';
 import { Categorie } from 'src/categorie/categorie.entity';
 import { Client } from 'src/client/client.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Competence } from 'src/competence/competence.entity';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -22,7 +23,7 @@ export class Offer {
   @Field(type => Float)
   @Column('float')
   budget: number;
-
+  
   @Field()
   @Column({ type: 'date' })
   startDate: Date;
@@ -34,13 +35,19 @@ export class Offer {
   @Field()
   @Column()
   status: string;
-
+  @Field(() => Client)
   @ManyToOne(() => Client, client => client.offers)
   client: Client;
 
+  @Field(() => Categorie)
   @ManyToOne(() => Categorie, categorie => categorie.offres)
   categorie: Categorie;
 
   @OneToMany(() => Candidature, c => c.offer)
   candidatures: Candidature[];
+  
+  @ManyToMany(() => Competence, competence => competence.offers, { cascade: true })
+  @JoinTable()
+  @Field(() => [Competence])
+  competences: Competence[];
 }

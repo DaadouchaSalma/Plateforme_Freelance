@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { FreelancerCompetence } from 'src/freelancer-competence/freelancer-competence.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Offer } from 'src/offre/offer.entity';
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -15,4 +16,8 @@ export class Competence {
 
   @OneToMany(() => FreelancerCompetence, uc => uc.competence)
   FreelancerCompetences: FreelancerCompetence[];
+  
+  @ManyToMany(() => Offer, offer => offer.competences)
+  offers: Offer[];
+  
 }

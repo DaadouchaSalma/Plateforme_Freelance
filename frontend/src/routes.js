@@ -46,8 +46,14 @@ export const Routes = {
     Tooltips: { path: "/components/tooltips" },
     Toasts: { path: "/components/toasts" },
     WidgetsComponent: { path: "/components/widgets" },
-
+  
     //client
     ClientUpdateProfile: { path: "/client/update"},
     ClientById: { path: "/clientprofile/:id"},
+
+    //offre
+    OffreAjout:{path:"/offre/ajout"},
+    OffreListeClient:{path:"/offre/listeClient"},
+    OffreUpdate:{path:"/offre/update/:id"},
+    OffreListeFreelancer:{path:"/offre/listeOffreFreelancer"}
 };

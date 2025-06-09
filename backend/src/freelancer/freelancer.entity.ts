@@ -6,6 +6,7 @@ import { LienProf } from 'src/lien-prof/lien-prof.entity';
 import { User } from 'src/user/user.entity';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+
 @ObjectType()
 @Entity()
 export class Freelancer {
@@ -33,18 +34,27 @@ export class Freelancer {
   @Column({ nullable: true })
   disponibilite?: boolean;
 
+  @Field(() => [FreelancerCompetence])
   @OneToMany(() => FreelancerCompetence, uc => uc.freelancer)
   FreelancerCompetences: FreelancerCompetence[];
 
+  
+  @Field(() => [LienProf])
   @OneToMany(() => LienProf, lien => lien.freelancer)
   liens: LienProf[];
-
+  
+  
+  @Field(() => Candidature)
   @OneToMany(() => Candidature, c => c.freelancer)
   candidatures: Candidature[];
 
+  
+  @Field(() => Feedback)
   @OneToMany(() => Feedback, feedback => feedback.senderfreelancer)
   sentFeedbacks: Feedback[];
 
+  
+  @Field(() => Feedback)
   @OneToMany(() => Feedback, feedback => feedback.receiverfreelancer)
   receivedFeedbacks: Feedback[];
   

@@ -6,17 +6,19 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 @ObjectType()
 @Entity()
 export class FreelancerCompetence {
-  @Field(type => Int)
+  @Field(type => Int,{ nullable: true })
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   niveau: string;
 
+  @Field(() => Freelancer)
   @ManyToOne(() => Freelancer, freelancer => freelancer.FreelancerCompetences)
   freelancer: Freelancer;
 
+  @Field(() => Competence)
   @ManyToOne(() => Competence, competence => competence.FreelancerCompetences)
   competence: Competence;
 }

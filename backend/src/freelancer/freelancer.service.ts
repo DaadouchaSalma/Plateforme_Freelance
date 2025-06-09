@@ -12,8 +12,10 @@ export class FreelancerService {
   ) {}
 
   async findAll(): Promise<Freelancer[]> {
-    return this.freelancerRepository.find({ relations: ['user'] });
+    return this.freelancerRepository.find({ relations: ['user','FreelancerCompetences','candidatures','FreelancerCompetences.competence','liens'] });
   }
+  
+
   async findOneById(id: number): Promise<Freelancer|null> {
     return this.freelancerRepository.findOne({
     where: { id },

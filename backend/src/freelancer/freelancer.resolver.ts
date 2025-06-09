@@ -20,7 +20,7 @@ export class FreelancerResolver {
   async freelancerById(@Args('id', { type: () => Int }) id: number): Promise<Freelancer | null> {
     return this.freelancerService.findOneById(id);
   }
-
+  
    @UseGuards(JwtAuthGuard, RolesGuard)
    @Roles('FREELANCER')
    @Mutation(() => Freelancer)

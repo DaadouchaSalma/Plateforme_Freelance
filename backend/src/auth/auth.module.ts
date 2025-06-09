@@ -10,6 +10,8 @@ import { User } from 'src/user/user.entity';
 import { Client } from 'src/client/client.entity';
 import { Freelancer } from 'src/freelancer/freelancer.entity';
 import { UserService } from 'src/user/user.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 
 @Module({

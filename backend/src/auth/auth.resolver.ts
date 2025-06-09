@@ -6,6 +6,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from 'src/client/client.entity';
 import { Repository } from 'typeorm';
 import { Freelancer } from 'src/freelancer/freelancer.entity';
+import { CurrentUser } from './current-user.decorator';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -19,10 +22,7 @@ export class AuthResolver {
     @InjectRepository(Freelancer)
     private readonly freelancerRepository: Repository<Freelancer>,
   ) {}
- @Query(() => String)
-  hello(): string {
-    return 'Hello world!';
-  }
+
   @Mutation(() => String)
   async login(
     @Args('email') email: string,
@@ -39,10 +39,16 @@ export class AuthResolver {
     @Args('password') password: string,
     @Args('nom') nom: string,
     @Args('photo') photo: string,
+    @Args('adresse') adresse: string,
+    @Args('about') about: string,
+    @Args('codePostal') codePostal: string,
+    @Args('tel') tel: string,
+    @Args('siteweb') siteweb: string,
+    @Args('domaine') domaine: string,
   ): Promise<User> {
     const user = await this.userService.create({ email, password, role: 'CLIENT' });
 
-    const client = this.clientRepository.create({ nom, photo, user });
+    const client = this.clientRepository.create({ nom, photo, about, adresse, codePostal, tel, siteweb, domaine, user });
     await this.clientRepository.save(client);
 
     return user;
@@ -63,4 +69,5 @@ export class AuthResolver {
 
     return user;
   }
+
 }

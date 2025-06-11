@@ -22,6 +22,10 @@ type Feedback {
   rating: Float!
   comment: String!
   createdAt: DateTime!
+  senderfreelancer: Freelancer
+  senderClient: Client
+  receiverfreelancer: Freelancer
+  receiverClient: Client
 }
 
 """
@@ -59,6 +63,7 @@ type FreelancerCompetence {
 type Competence {
   id: Int!
   nom: String!
+  FreelancerCompetences: [FreelancerCompetence!]
 }
 
 type Offer {
@@ -145,6 +150,8 @@ type DomaineStat {
 type Query {
   allFreelancers: [Freelancer!]!
   freelancerById(id: Int!): Freelancer
+  meFreelancer: Freelancer
+  getCompetences: [Competence!]!
   allClients: [Client!]!
   clientById(id: Int!): Client
   me: Client
@@ -153,8 +160,9 @@ type Query {
   offersForClient: [Offer!]!
   myCandidatures: [Candidature!]!
   candidaturesByOffre(offreId: Int!): [Candidature!]!
-  getCompetences: [Competence!]!
   getAllCategories: [Categorie!]!
+  getMyFeedbacks: [Feedback!]!
+  getFeedbacksByUserId(userId: Int!, userType: String!): [Feedback!]!
   getStats: Stats!
   getOffresParCategorie: [CategorieStats!]!
   getTopFreelancers: [TopFreelancerStat!]!
@@ -164,7 +172,8 @@ type Query {
 }
 
 type Mutation {
-  updateFreelancer(nom: String, prenom: String, photo: String, bio: String, disponibilite: Boolean): Freelancer!
+  updateFreelancer(nom: String, prenom: String, photo: Upload, bio: String, disponibilite: Boolean, liensProf: [LienProfInput!], competences: [Int!], niveaux: [String!]): Freelancer!
+  createCompetence(nom: String!): Competence!
   updateClient(nom: String, photo: String, about: String, adresse: String, codePostal: String, tel: String, siteweb: String, domaine: String): Client!
   createOffer(title: String!, description: String!, budget: Float!, startDate: String!, endDate: String!, status: String!, competenceIds: [Int!]!, categorieId: Int!): Offer!
   updateOffer(id: Int!, title: String, description: String, budget: Int, startDate: DateTime, endDate: DateTime, status: String, categorieId: Int): Offer!
@@ -173,11 +182,20 @@ type Mutation {
   accepterCandidature(id: Int!): Candidature!
   rejeterCandidature(id: Int!): Candidature!
   createCandidature(input: MinimalCandidatureInput!): Candidature!
-  createCompetence(nom: String!): Competence!
   createCategorie(title: String!): Categorie!
+  createFeedback(receiverId: Int!, receiverType: String!, rating: Float!, comment: String!): Feedback!
   login(email: String!, password: String!): String!
   registerClient(email: String!, password: String!, nom: String!, photo: String!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
   registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: Upload!, bio: String): User!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input LienProfInput {
+  id: Int
+  type: String!
+  url: String!
 }
 
 input MinimalCandidatureInput {

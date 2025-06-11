@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { GET_CLIENT_BY_ID_QUERY } from "../../graphql/mutations/client";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from 'react-router-dom';
 import { 
   faMapMarkerAlt,
@@ -10,12 +10,14 @@ import {
   faStarHalfAlt,
   faGlobeEurope,
   faPhoneAlt,
-  faLink
+  faLink,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons';
-import { Col, Row, Card, Image, Button, ListGroup, Tab, Badge, Nav } from '@themesberg/react-bootstrap';
+import { Col, Row, Card, Image, Button, ListGroup, Tab, Badge, Nav, Form, Modal, Toast } from '@themesberg/react-bootstrap';
 import Profile1 from "../../assets/img/team/profile-picture-1.jpg";
 import { Navbar, Container } from '@themesberg/react-bootstrap';
 import logo from "../../assets/img/logo/icon+title(small).png";
+import { GET_FEEDBACKS_BY_USER_ID, CREATE_FEEDBACK } from "../../graphql/mutations/feedback";
 
 export default () => {
     const { id } = useParams();
@@ -24,23 +26,120 @@ export default () => {
         skip: !id,
     });
 
+    
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastVariant, setToastVariant] = useState('success');
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+    const [hoverRating, setHoverRating] = useState(0);
+    const handleCloseToast = () => setShowToast(false);
+
+    const [createFeedback, { loading: submittingFeedback }] = useMutation(CREATE_FEEDBACK, {
+    refetchQueries: [
+        {
+            query: GET_FEEDBACKS_BY_USER_ID,
+            variables: { 
+                userId: parseInt(id),
+                userType: 'CLIENT'
+            }
+        }
+    ],
+    onCompleted: () => {
+        setShowFeedbackModal(false);
+        setRating(0);
+        setComment('');
+        setToastMessage("Avis envoyé avec succès!");
+        setToastVariant('success');
+        setShowToast(true);
+    },
+    onError: (error) => {
+        console.error("Mutation error details:", error);
+        setToastMessage(`Erreur: ${error.message}`);
+        setToastVariant('danger');
+        setShowToast(true);
+    }
+});
+
+    const client = data?.clientById;
+    const { data: feedbackData, loading: feedbackLoading, error: feedbackError } = useQuery(GET_FEEDBACKS_BY_USER_ID, {
+        variables: { 
+            userId: parseInt(id),
+            userType: 'CLIENT'
+        },
+    });
+    const feedbacks = feedbackData?.getFeedbacksByUserId;
+
+    const { averageRating, feedbackCount } = useMemo(() => {
+        if (!feedbacks || feedbacks.length === 0) {
+            return { averageRating: 0, feedbackCount: 0 };
+        }
+
+        const freelancerFeedbacks = feedbacks.filter(fb => fb.senderfreelancer);
+        const totalRating = freelancerFeedbacks.reduce((sum, feedback) => sum + feedback.rating, 0);
+        const average = totalRating / freelancerFeedbacks.length;
+        
+        return {
+            averageRating: Math.round(average * 10) / 10,
+            feedbackCount: freelancerFeedbacks.length
+        };
+    }, [feedbacks]);
+
+    const handleSubmitFeedback = () => {
+    // Validate inputs
+    if (rating === 0) {
+        setToastMessage("Veuillez sélectionner une note");
+        setToastVariant('danger');
+        setShowToast(true);
+        return;
+    }
+    
+    if (!comment.trim()) {
+        setToastMessage("Veuillez saisir un commentaire");
+        setToastVariant('danger');
+        setShowToast(true);
+        return;
+    }
+
+    createFeedback({
+        variables: {
+            receiverId: parseInt(id),
+            receiverType: 'CLIENT', 
+            rating: parseFloat(rating),
+            comment: comment.trim()
+        }
+    });
+};
+
+    React.useEffect(() => {
+    if (showToast) {
+        const timer = setTimeout(() => {
+            setShowToast(false);
+        }, 5000); // 5 seconds
+        return () => clearTimeout(timer);
+    }
+}, [showToast]);
+
     if (loading) return <p>Chargement...</p>;
     if (error) return <p>Erreur lors du chargement du client: {error.message}</p>;
 
-    const client = data?.clientById;
-
-    const reviews = [
-        {
-            id: 1,
-            freelancer: "John Smith",
-            rating: 4.5,
-            comment: "Excellent client avec qui travailler. Exigences claires et paiements rapides.",
-            date: "Mars 2023"
-        }
-    ];
-
     return (
         <>
+            <Toast 
+    show={showToast} 
+    onClose={handleCloseToast} 
+    className="position-fixed top-0 end-0 m-3"
+    style={{ zIndex: 9999 }}  // Ensure it appears above other elements
+    bg={toastVariant}
+>
+    <Toast.Header className={`bg-${toastVariant} text-white`} closeButton>
+        <strong className="me-auto">Notification</strong>
+    </Toast.Header>
+    <Toast.Body className={toastVariant === 'success' ? 'bg-success text-white' : 'bg-danger text-white'}>
+        {toastMessage}
+    </Toast.Body>
+</Toast>
             <Navbar variant="dark" expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary">
                 <Container className="position-relative">
                     <Navbar.Brand href="#home" className="me-lg-3">
@@ -79,7 +178,7 @@ export default () => {
             zIndex: 2
         }}>
             <img 
-                src={Profile1} 
+                src={"http://localhost:3000/uploads/"+client.photo}
                 alt="Client" 
                 className="rounded-circle img-thumbnail" 
                 style={{ 
@@ -99,14 +198,21 @@ style={{ height: '26px', padding: '4px 12px',
     fontSize: '0.9rem', }}>{client.domaine}</Badge>
                 
                 <div className="d-flex justify-content-center mb-3">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <FontAwesomeIcon 
-                            key={star}
-                            icon={star <= 4 ? faStar : (star === 5 ? faStarHalfAlt : faStar)}
-                            className={star <= 4.5 ? "text-warning" : "text-muted"}
-                        />
-                    ))}
-                    <span className="ms-2">4.5 (12 avis)</span>
+                    {[1, 2, 3, 4, 5].map((star) => {
+                        let isFilled = star <= Math.floor(averageRating);
+                        let isHalf = star > averageRating && star - 0.5 <= averageRating;
+
+                        return (
+                            <FontAwesomeIcon 
+                                key={star}
+                                icon={isHalf ? faStarHalfAlt : faStar}
+                                className={isFilled || isHalf ? "text-warning" : "text-muted"}
+                            />
+                        );
+                    })}
+                    <span className="ms-2">
+                        {averageRating.toFixed(1)} ({feedbackCount} avis)
+                    </span>
                 </div>
             </div>
             
@@ -223,8 +329,7 @@ style={{ height: '26px', padding: '4px 12px',
                                             <Nav.Link eventKey="about">À propos</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link eventKey="reviews">Avis ({reviews.length})</Nav.Link>
-                                        </Nav.Item>
+                                        <Nav.Link eventKey="reviews">Avis ({feedbackCount})</Nav.Link>                                        </Nav.Item>
                                     </Nav>
                                 </Card.Header>
                                 
@@ -236,35 +341,44 @@ style={{ height: '26px', padding: '4px 12px',
                                         </Tab.Pane>
                                         
                                         <Tab.Pane eventKey="reviews">
-                                            <h4 className="mb-4">Avis des clients</h4>
-                                            {reviews.length > 0 ? (
-                                                <>
-                                                    {reviews.map((review) => (
-                                                        <Card key={review.id} className="mb-3">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h4 className="mb-0">Avis des freelancers</h4>
+                                                <Button 
+                                                    variant="primary" 
+                                                    size="sm" 
+                                                    onClick={() => setShowFeedbackModal(true)}
+                                                >
+                                                    <FontAwesomeIcon icon={faPlus} className="me-2" />
+                                                    Ajouter un avis
+                                                </Button>
+                                            </div>
+                                            {feedbackLoading ? (
+                                                <p>Chargement des avis...</p>
+                                            ) : feedbackError ? (
+                                                <p>Erreur lors du chargement des avis</p>
+                                            ) : feedbacks?.filter(fb => fb.senderfreelancer).length > 0 ? (
+                                                feedbacks
+                                                    .filter(fb => fb.senderfreelancer)
+                                                    .map((feedback) => (
+                                                        <Card key={feedback.id} className="mb-3">
                                                             <Card.Body>
                                                                 <div className="d-flex justify-content-between mb-2">
-                                                                    <h5>{review.freelancer}</h5>
+                                                                    <h5>{feedback.senderfreelancer?.nom || 'Anonymous'} {feedback.senderfreelancer?.prenom || 'Anonymous'}</h5>
                                                                     <div>
                                                                         {[1, 2, 3, 4, 5].map((star) => (
-                                                                            <FontAwesomeIcon 
+                                                                            <FontAwesomeIcon
                                                                                 key={star}
-                                                                                icon={star <= review.rating ? faStar : faStar}
-                                                                                className={star <= review.rating ? "text-warning" : "text-muted"}
+                                                                                icon={faStar}
+                                                                                className={star <= feedback.rating ? "text-warning" : "text-muted"}
                                                                             />
                                                                         ))}
                                                                     </div>
                                                                 </div>
-                                                                <p className="text-muted">{review.date}</p>
-                                                                <p>{review.comment}</p>
+                                                                <p className="text-muted">{new Date(feedback.createdAt).toLocaleDateString()}</p>
+                                                                <p>{feedback.comment}</p>
                                                             </Card.Body>
                                                         </Card>
-                                                    ))}
-                                                    
-                                                    <div className="mt-4 p-4 bg-light rounded">
-                                                        <h5>Laisser un avis</h5>
-                                                        <p className="text-muted">Cette fonctionnalité sera bientôt disponible.</p>
-                                                    </div>
-                                                </>
+                                                    ))
                                             ) : (
                                                 <p>Aucun avis pour le moment.</p>
                                             )}
@@ -276,6 +390,54 @@ style={{ height: '26px', padding: '4px 12px',
                     </Col>
                 </Row>
             </div>
+
+            {/* Feedback Modal */}
+            <Modal show={showFeedbackModal} onHide={() => setShowFeedbackModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Ajouter un avis</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Note</Form.Label>
+                            <div className="d-flex">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <FontAwesomeIcon
+                                        key={star}
+                                        icon={faStar}
+                                        className={`mx-1 ${(hoverRating || rating) >= star ? "text-warning" : "text-muted"}`}
+                                        style={{ cursor: "pointer", fontSize: "1.5rem" }}
+                                        onClick={() => setRating(star)}
+                                        onMouseEnter={() => setHoverRating(star)}
+                                        onMouseLeave={() => setHoverRating(0)}
+                                    />
+                                ))}
+                            </div>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Commentaire</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowFeedbackModal(false)}>
+                        Annuler
+                    </Button>
+                    <Button 
+    variant="primary" 
+    onClick={handleSubmitFeedback}
+    disabled={submittingFeedback}
+>
+    {submittingFeedback ? "Envoi en cours..." : "Envoyer l'avis"}
+</Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };

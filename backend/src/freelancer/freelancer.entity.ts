@@ -27,7 +27,7 @@ export class Freelancer {
   photo: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   bio?: string;
 
   @Field({ nullable: true })

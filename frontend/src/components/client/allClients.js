@@ -32,11 +32,7 @@ export const ClientTable = () => {
             {clients.map((client) => (
               <tr key={client.id}>
                 <td>
-                  {client.photo ? (
-                    <img src="/profile-picture-1.jpg"  alt="Client" width="40" height="40" style={{ borderRadius: "50%" }} />
-                  ) : (
-                    <span>No photo</span>
-                  )}
+                    <img src={"http://localhost:3000/uploads/"+client.photo}  alt="Client" width="40" height="40" style={{ borderRadius: "50%" }} />
                 </td>
                 <td>{client.nom}</td>
                 <td>{client.user.email}</td>

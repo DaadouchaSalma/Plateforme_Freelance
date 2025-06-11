@@ -1,3 +1,5 @@
+import freelancerProfile from "./pages/components/freelancer/freelancerProfile";
+import DashboardAdmin from "./pages/dashboard/DashboardAdmin";
 
 export const Routes = {
 
@@ -60,6 +62,8 @@ export const Routes = {
 
     //Freelancer
     ListFreelancer: { path: "/freelancer/listF" },
+    FreelancerProfile: { path: "/freelancerprofile/:id"},
+    FreelancerUpdate: { path: "/freelancer/update" },
 
   
     //client
@@ -71,6 +75,8 @@ export const Routes = {
     OffreListeClient:{path:"/offre/listeClient"},
     OffreUpdate:{path:"/offre/update/:id"},
     OffreListeFreelancer:{path:"/offre/listeOffreFreelancer"},
+
+    DashboardAdminNew:{path:"/dashboard/dashboardAdmin"}
 
 
     

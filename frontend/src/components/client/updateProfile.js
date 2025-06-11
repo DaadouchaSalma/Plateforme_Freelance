@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faEnvelope, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 import { GET_CURRENT_CLIENT_QUERY, UPDATE_CLIENT_MUTATION } from "../../graphql/mutations/client";
@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Card, Image, Button, ListGroup, Tab, Badge, Nav, Form } from '@themesberg/react-bootstrap';
 import Profile1 from "../../assets/img/team/profile-picture-1.jpg";
+import { GET_MY_FEEDBACKS } from "../../graphql/mutations/feedback";
 
 export default () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -28,8 +29,27 @@ export default () => {
 
     const { loading, error, data, refetch } = useQuery(GET_CURRENT_CLIENT_QUERY);
     const [updateClient] = useMutation(UPDATE_CLIENT_MUTATION);
-
+    const { data: feedbackData, loading: feedbackLoading, error: feedbackError } = useQuery(GET_MY_FEEDBACKS);
+    const feedbacks = feedbackData?.getMyFeedbacks;
+    console.log("feedback: ", feedbacks)
+    console.log("Filtered feedbacks for display:", feedbacks?.filter(fb => fb.senderfreelancer));
     const client = data?.me;
+
+    // Calculate average rating and feedback count
+    const { averageRating, feedbackCount } = useMemo(() => {
+        if (!feedbacks || feedbacks.length === 0) {
+            return { averageRating: 0, feedbackCount: 0 };
+        }
+
+        const freelancerFeedbacks = feedbacks.filter(fb => fb.senderfreelancer);
+        const totalRating = freelancerFeedbacks.reduce((sum, feedback) => sum + feedback.rating, 0);
+        const average = totalRating / freelancerFeedbacks.length;
+        
+        return {
+            averageRating: Math.round(average * 10) / 10,
+            feedbackCount: freelancerFeedbacks.length
+        };
+    }, [feedbacks]);
 
     useEffect(() => {
         if (client) {
@@ -90,16 +110,6 @@ export default () => {
     if (error) return <p>Erreur : {error.message}</p>;
     if (!client) return <p>Client non connecté ou non trouvé</p>;
 
-    const reviews = [
-        {
-            id: 1,
-            freelancer: "John Smith",
-            rating: 4.5,
-            comment: "Excellent client avec qui travailler. Exigences claires et paiements rapides.",
-            date: "Mars 2023"
-        }
-    ];
-
     return (
         <>
             <div className="d-flex justify-content-end  me-4" style={{ marginRigth: '100px', marginTop: "30px" }}>
@@ -133,7 +143,7 @@ export default () => {
                                 zIndex: 2
                             }}>
                                 <img 
-                                    src={Profile1} 
+                                    src={"http://localhost:3000/uploads/"+client.photo}
                                     alt="Client" 
                                     className="rounded-circle img-thumbnail" 
                                     style={{ 
@@ -159,15 +169,23 @@ export default () => {
   </Badge>
 </div>
                                 
+                                {/* Updated rating display */}
                                 <div className="d-flex justify-content-center mb-3">
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <FontAwesomeIcon 
-                                            key={star}
-                                            icon={star <= 4 ? faStar : (star === 5 ? faStarHalfAlt : faStar)}
-                                            className={star <= 4.5 ? "text-warning" : "text-muted"}
-                                        />
-                                    ))}
-                                    <span className="ms-2">4.5 (12 avis)</span>
+                                    {[1, 2, 3, 4, 5].map((star) => {
+                                        let isFilled = star <= Math.floor(averageRating);
+                                        let isHalf = star > averageRating && star - 0.5 <= averageRating;
+
+                                        return (
+                                            <FontAwesomeIcon 
+                                                key={star}
+                                                icon={isHalf ? faStarHalfAlt : faStar}
+                                                className={isFilled || isHalf ? "text-warning" : "text-muted"}
+                                            />
+                                        );
+                                    })}
+                                    <span className="ms-2">
+                                        {averageRating.toFixed(1)} ({feedbackCount} avis)
+                                    </span>
                                 </div>
                                 
                                 <div className="mt-auto">
@@ -323,7 +341,7 @@ export default () => {
                                             <Nav.Link eventKey="about">À propos</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link eventKey="reviews">Avis ({reviews.length})</Nav.Link>
+                                            <Nav.Link eventKey="reviews">Avis ({feedbackCount})</Nav.Link>
                                         </Nav.Item>
                                     </Nav>
                                 </Card.Header>
@@ -348,38 +366,38 @@ export default () => {
                                         </Tab.Pane>
                                         
                                         <Tab.Pane eventKey="reviews">
-                                            <h4 className="mb-4">Avis des clients</h4>
-                                            {reviews.length > 0 ? (
-                                                <>
-                                                    {reviews.map((review) => (
-                                                        <Card key={review.id} className="mb-3">
-                                                            <Card.Body>
-                                                                <div className="d-flex justify-content-between mb-2">
-                                                                    <h5>{review.freelancer}</h5>
-                                                                    <div>
-                                                                        {[1, 2, 3, 4, 5].map((star) => (
-                                                                            <FontAwesomeIcon 
-                                                                                key={star}
-                                                                                icon={star <= review.rating ? faStar : faStar}
-                                                                                className={star <= review.rating ? "text-warning" : "text-muted"}
-                                                                            />
-                                                                        ))}
-                                                                    </div>
-                                                                </div>
-                                                                <p className="text-muted">{review.date}</p>
-                                                                <p>{review.comment}</p>
-                                                            </Card.Body>
-                                                        </Card>
-                                                    ))}
-                                                    
-                                                    <div className="mt-4 p-4 bg-light rounded">
-                                                        <h5>Laisser un avis</h5>
-                                                        <p className="text-muted">Cette fonctionnalité sera bientôt disponible.</p>
+                                          <h4 className="mb-4">Avis des Freelancers</h4>
+                                        
+                                          {feedbackLoading ? (
+                                            <p>Chargement des avis...</p>
+                                          ) : feedbackError ? (
+                                            <p>Erreur lors du chargement des avis</p>
+                                          ) : feedbacks?.filter(fb => fb.senderfreelancer).length > 0 ? (
+                                            feedbacks
+                                              .filter(fb => fb.senderfreelancer)
+                                              .map((feedback) => (
+                                                <Card key={feedback.id} className="mb-3">
+                                                  <Card.Body>
+                                                    <div className="d-flex justify-content-between mb-2">
+                                                      <h5>{feedback.senderfreelancer?.nom || 'Anonymous'}</h5>
+                                                      <div>
+                                                        {[1, 2, 3, 4, 5].map((star) => (
+                                                          <FontAwesomeIcon
+                                                            key={star}
+                                                            icon={faStar}
+                                                            className={star <= feedback.rating ? "text-warning" : "text-muted"}
+                                                          />
+                                                        ))}
+                                                      </div>
                                                     </div>
-                                                </>
-                                            ) : (
-                                                <p>Aucun avis pour le moment.</p>
-                                            )}
+                                                    <p className="text-muted">{new Date(feedback.createdAt).toLocaleDateString()}</p>
+                                                    <p>{feedback.comment}</p>
+                                                  </Card.Body>
+                                                </Card>
+                                              ))
+                                          ) : (
+                                            <p>Aucun avis pour le moment.</p>
+                                          )}
                                         </Tab.Pane>
                                     </Tab.Content>
                                 </Card.Body>

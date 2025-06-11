@@ -18,6 +18,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 // import { ExperienceModule } from './experience/experience.module';
 import { ExperienceModule } from './experience/experience.module';
+import { StatsModule } from './stat/stat.module';
 // import { UploadScalar } from './common/scalars/upload.scalar';
 import { MessagesModule } from './messages/messages.module';
 
@@ -53,6 +54,8 @@ import { MessagesModule } from './messages/messages.module';
   AuthModule,
   ExperienceModule,
   MessagesModule,
+  StatsModule,
+
 ],
   controllers: [AppController],
   providers: [AppService],

@@ -48,6 +48,7 @@ const GET_OFFERS = gql`
         title
       }
       client {
+        id
         nom
         photo
       }
@@ -310,12 +311,12 @@ const ListeOffreFreelancer = () => {
               <Row>
                 {filteredOffers.map((offer) => (
                   <Col key={offer.id} className="mb-4">
-                    <Card className="shadow-sm h-100 border-0 rounded-lg overflow-hidden"style={{width:"750px"}}>
+                    <Card className="shadow-sm h-100 border-0 rounded-lg overflow-hidden" style={{ width:"750px", cursor: 'pointer'}} onClick={() => history.push(`/clientprofile/${offer.client?.id}`)} >
                       <Card.Body>
                         <div className="d-flex justify-content-between align-items-start mb-3">
                           <div className="d-flex align-items-center">
                             <div className="bg-light rounded-circle overflow-hidden d-flex align-items-center justify-content-center me-2" 
-                                style={{ width: '40px', height: '40px', flexShrink: 0 }}>
+                                style={{ width: '40px', height: '40px', flexShrink: 0 }} >
                               <img 
                                 src={logo}
                                 alt={offer.client?.nom || "Client"} 

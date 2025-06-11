@@ -34,6 +34,7 @@
     "apollo-server-express": "^3.13.0",
     "bcrypt": "^6.0.0",
     "graphql": "^16.11.0",
+    "graphql-type-json": "^0.3.2",
     "graphql-upload-minimal": "^1.6.1",
     "mysql2": "^3.14.1",
     "passport": "^0.7.0",

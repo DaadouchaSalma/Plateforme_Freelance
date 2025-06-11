@@ -22,6 +22,10 @@ type Feedback {
   rating: Float!
   comment: String!
   createdAt: DateTime!
+  senderfreelancer: Freelancer
+  senderClient: Client
+  receiverfreelancer: Freelancer
+  receiverClient: Client
 }
 
 """
@@ -82,6 +86,7 @@ type Offer {
   status: String!
   client: Client!
   categorie: Categorie!
+  createdAt: DateTime!
   competences: [Competence!]!
 }
 
@@ -116,10 +121,48 @@ type Freelancer {
   user: User!
 }
 
+type Stats {
+  clients: Int!
+  freelancers: Int!
+  activeOffers: Int!
+  candidatures: Int!
+}
+
+type CategorieStats {
+  categorie: String!
+  nombre: Int!
+}
+
+type TopFreelancerStat {
+  nom: String!
+  prenom: String!
+  photo: String!
+  nombre: Int!
+}
+
+type CompetenceStat {
+  nom: String!
+  count: Float!
+  percentage: Float!
+}
+
+type WeeklyActivityStat {
+  day: String!
+  offers: Float!
+  candidatures: Float!
+}
+
+type DomaineStat {
+  domaine: String!
+  totalClients: Float!
+}
+
 type Query {
   allFreelancers: [Freelancer!]!
   freelancerById(id: Int!): Freelancer
   getCurrentFreelancer: Freelancer
+  meFreelancer: Freelancer
+  getCompetences: [Competence!]!
   allClients: [Client!]!
   clientById(id: Int!): Client
   me: User!
@@ -128,14 +171,22 @@ type Query {
   offersForClient: [Offer!]!
   myCandidatures: [Candidature!]!
   candidaturesByOffre(offreId: Int!): [Candidature!]!
-  getCompetences: [Competence!]!
-  getAllCategories: [Categorie!]!
   getConversation(withUserId: Int!): [Message!]!
   getAvailableContacts: [User!]!
+  getAllCategories: [Categorie!]!
+  getMyFeedbacks: [Feedback!]!
+  getFeedbacksByUserId(userId: Int!, userType: String!): [Feedback!]!
+  getStats: Stats!
+  getOffresParCategorie: [CategorieStats!]!
+  getTopFreelancers: [TopFreelancerStat!]!
+  getCompetenceStats: [CompetenceStat!]!
+  getActivityByWeekday: [WeeklyActivityStat!]!
+  getClientStatsByDomaine: [DomaineStat!]!
 }
 
 type Mutation {
-  updateFreelancer(nom: String, prenom: String, photo: String, bio: String, disponibilite: Boolean): Freelancer!
+  updateFreelancer(nom: String, prenom: String, photo: Upload, bio: String, disponibilite: Boolean, liensProf: [LienProfInput!], competences: [Int!], niveaux: [String!]): Freelancer!
+  createCompetence(nom: String!): Competence!
   updateClient(nom: String, photo: String, about: String, adresse: String, codePostal: String, tel: String, siteweb: String, domaine: String): Client!
   createOffer(title: String!, description: String!, budget: Float!, startDate: String!, endDate: String!, status: String!, competenceIds: [Int!]!, categorieId: Int!): Offer!
   updateOffer(id: Int!, title: String, description: String, budget: Int, startDate: DateTime, endDate: DateTime, status: String, categorieId: Int): Offer!
@@ -144,12 +195,21 @@ type Mutation {
   accepterCandidature(id: Int!): Candidature!
   rejeterCandidature(id: Int!): Candidature!
   createCandidature(input: MinimalCandidatureInput!): Candidature!
-  createCompetence(nom: String!): Competence!
   createCategorie(title: String!): Categorie!
+  createFeedback(receiverId: Int!, receiverType: String!, rating: Float!, comment: String!): Feedback!
   login(email: String!, password: String!): String!
   registerClient(email: String!, password: String!, nom: String!, photo: Upload!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
   registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: Upload!, liensProf: [LienProfInput!]!, competences: [Int!]!, niveaux: [String!]!, disponibilite: Boolean!, bio: String): User!
   sendMessage(createMessageInput: CreateMessageInput!): Message!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input LienProfInput {
+  id: Int
+  type: String!
+  url: String!
 }
 
 input MinimalCandidatureInput {
@@ -171,12 +231,9 @@ input ExperienceInput {
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
-input LienProfInput {
-  type: String!
-  url: String!
-}
 
 input CreateMessageInput {
   content: String!
   receiverId: Int!
 }
+

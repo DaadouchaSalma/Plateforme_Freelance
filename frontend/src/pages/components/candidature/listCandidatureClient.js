@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { useQuery,useMutation  } from "@apollo/client";
 import { GET_CANDIDATURES_BY_OFFRE, ACCEPTER_CANDIDATURE, REJETER_CANDIDATURE  } from "../../../graphql/mutations/candidature";
 import {
@@ -40,7 +41,8 @@ const statusColors = {
 
 const ClientCandidaturesList = () => {
   const { offreId } = useParams();
-    
+  const history = useHistory();
+
   const { loading, error, data ,refetch } = useQuery(GET_CANDIDATURES_BY_OFFRE, {
     variables: { offreId: Number(offreId)  }
   });
@@ -156,7 +158,7 @@ const handleRejeter = async (id) => {
                 <tbody>
                   {candidatures.map((candidature) => (
                     <tr key={candidature.id}>
-                      <td>
+                      <td style={{ cursor: 'pointer'}} onClick={() => history.push(`/freelancerprofile/${candidature.freelancer?.id}`)}>
                         <div className="d-flex align-items-center">
                           <Image 
                             src={"http://localhost:3000/uploads/"+candidature.freelancer.photo || '/default-profile.png'} 

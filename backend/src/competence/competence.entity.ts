@@ -14,6 +14,7 @@ export class Competence {
   @Column()
   nom: string;
 
+
   @Field(() => [FreelancerCompetence], { nullable: true })
   @OneToMany(() => FreelancerCompetence, uc => uc.competence)
   FreelancerCompetences: FreelancerCompetence[];

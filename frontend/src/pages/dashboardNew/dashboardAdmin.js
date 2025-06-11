@@ -15,6 +15,8 @@ import {
   faCalendarWeek,
   faEllipsisV
 } from '@fortawesome/free-solid-svg-icons';
+import {ClientTable} from '../../components/client/allClients';
+import {FreelancersList} from '../components/freelancer/listeFreelancerA';
 
 import { Col, Row, Card, ProgressBar, Dropdown, Button, ButtonGroup,Modal, Form } from '@themesberg/react-bootstrap';
 
@@ -592,8 +594,15 @@ const [createCompetence] = useMutation(CREATE_COMPETENCE, {
                 data={domaineStats} 
               />
             </Col>
+            <Col xs={12}>
+          <ClientTable></ClientTable>
+          </Col>
+          
+          
           </Row>
+          
         </Col>
+        
         
         {/* Colonne droite */}
         <Col lg={4}>
@@ -622,9 +631,14 @@ const [createCompetence] = useMutation(CREATE_COMPETENCE, {
               />
             </Col>
             
+            
           </Row>
         </Col>
+         <Col xs={12}>
+          <FreelancersList></FreelancersList>
+          </Col>
       </Row>
+    
     </div>
     <Modal show={showCreateModal} onHide={handleCloseCreateModal} dialogClassName="modal-top">
         <Modal.Header closeButton>

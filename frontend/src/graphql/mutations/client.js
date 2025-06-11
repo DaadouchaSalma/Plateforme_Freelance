@@ -49,8 +49,8 @@ export const GET_CLIENT_BY_ID_QUERY = gql`
 `;
 
 export const GET_CURRENT_CLIENT_QUERY = gql`
-  query GetCurrentClient {
-    me {
+  query getCurrentClient {
+    getCurrentClient {
       id
       nom
       photo

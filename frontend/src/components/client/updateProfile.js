@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faEnvelope, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 import { GET_CURRENT_CLIENT_QUERY, UPDATE_CLIENT_MUTATION } from "../../graphql/mutations/client";
 import { useQuery, useMutation } from "@apollo/client";
+import { useHistory } from "react-router-dom";
 import { 
   faMapMarkerAlt,
   faStar,
@@ -33,7 +34,7 @@ export default () => {
     const feedbacks = feedbackData?.getMyFeedbacks;
     console.log("feedback: ", feedbacks)
     console.log("Filtered feedbacks for display:", feedbacks?.filter(fb => fb.senderfreelancer));
-    const client = data?.me;
+    const client = data?.getCurrentClient;
 
     // Calculate average rating and feedback count
     const { averageRating, feedbackCount } = useMemo(() => {
@@ -107,9 +108,11 @@ export default () => {
     };
 
     if (loading) return <p>Chargement...</p>;
-    if (error) return <p>Erreur : {error.message}</p>;
+    if (error) {
+        console.log('client: ', client)
+        return <p>Erreur : {error.message}</p>;}
     if (!client) return <p>Client non connecté ou non trouvé</p>;
-
+    const history = useHistory();
     return (
         <>
             <div className="d-flex justify-content-end  me-4" style={{ marginRigth: '100px', marginTop: "30px" }}>
@@ -189,7 +192,7 @@ export default () => {
                                 </div>
                                 
                                 <div className="mt-auto">
-                                    <Button variant="primary" className="w-100">
+                                    <Button variant="primary" className="w-100" style={{ cursor: 'pointer' }} onClick={() => history.push(`/messagerie/msg`)}>
                                         <FontAwesomeIcon icon={faEnvelope} className="me-2" />
                                         Envoyer un message
                                     </Button>

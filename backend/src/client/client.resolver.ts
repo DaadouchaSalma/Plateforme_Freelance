@@ -7,6 +7,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/user/user.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Resolver()
 export class ClientResolver {
@@ -61,11 +62,11 @@ export class ClientResolver {
     
         return this.clientService.save(client);
       }
-
+    
     @UseGuards(JwtAuthGuard)
-    @Query(() => Client, { name: 'me', nullable: true })
-    async getCurrentClient(@CurrentUser() user: User): Promise<Client | null> {
-        const client = await this.clientService.findByUserId(user.id);
-        return client;
+    @Query(() => Client, { nullable: true })
+    async getCurrentClient (@CurrentUser() user: User): Promise<Client | null> {
+        const client = await this.clientService.findByUserId(user.id)
+        return client
     }
 }

@@ -53,4 +53,10 @@ export class FreelancerResolver {
 
     return this.freelancerService.save(freelancer);
   }
+  @UseGuards(JwtAuthGuard)
+      @Query(() => Freelancer, { nullable: true })
+      async getCurrentFreelancer(@CurrentUser() user: User): Promise<Freelancer | null> {
+          const client = await this.freelancerService.findByUserId(user.id);
+          return client;
+      }
 }

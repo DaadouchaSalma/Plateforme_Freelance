@@ -12,6 +12,9 @@ import { Freelancer } from 'src/freelancer/freelancer.entity';
 import { UserService } from 'src/user/user.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { Competence } from 'src/competence/competence.entity';
+import { LienProf } from 'src/lien-prof/lien-prof.entity';
+import { FreelancerCompetence } from 'src/freelancer-competence/freelancer-competence.entity';
 
 
 @Module({
@@ -22,7 +25,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       signOptions: { expiresIn: '7d' },
     }),
     UserModule,
-    TypeOrmModule.forFeature([User, Client, Freelancer]),
+    TypeOrmModule.forFeature([User, Client, Freelancer,Competence,LienProf,FreelancerCompetence]),
   ],
   providers: [AuthService, AuthResolver, JwtStrategy, UserService],
 })

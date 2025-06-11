@@ -60,6 +60,7 @@ import ajoutOffre from './components/offre/ajoutOffre';
 import listeOffreClient from "./components/offre/listeOffreClient";
 import updateOffre from "./components/offre/updateOffre";
 import listeOffreFreelancer from "./components/offre/listeOffreFreelancer"
+import MessengerLayout from './components/messagerie/MessengerLayout';
 
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
@@ -113,6 +114,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 export default () => (
   <Switch>
+    {/* <RouteWithLoader exact path={Routes.Login.path} component={Signin} /> */}
 
     
     {/* Candidature*/}
@@ -123,6 +125,8 @@ export default () => (
      {/* Freelancer */}
      <RouteWithSidebar exact path={Routes.ListFreelancer.path} component={FreelancersList} />
 
+    {/* Messagerie */}
+    <RouteWithLoader exact path={Routes.Messagerie.path} component={MessengerLayout} />
 
     <RouteWithLoader exact path={Routes.ClientById.path} component={ClientByID} />
     <RouteWithLoader exact path={Routes.Presentation.path} component={Presentation} />
@@ -176,6 +180,7 @@ export default () => (
     <RouteWithSidebar exact path={Routes.OffreUpdate.path} component={updateOffre} />
     <RouteWithLoader exact path={Routes.OffreListeFreelancer.path} component={listeOffreFreelancer} />
 
+    
     <Redirect to={Routes.NotFound.path} />
   </Switch>
 );

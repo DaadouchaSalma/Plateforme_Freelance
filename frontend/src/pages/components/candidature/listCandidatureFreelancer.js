@@ -23,6 +23,7 @@ import {
   faHourglassHalf,
   faEye
 } from "@fortawesome/free-solid-svg-icons";
+import NavbarFreelancer from "../../../components/NavbarFreelancer";
 
 const statusIcons = {
   "En attente": faHourglassHalf,
@@ -58,23 +59,7 @@ const MyCandidatures = () => {
 
   return (
     <>
-    <Navbar variant="dark" expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary">
-        <Container className="position-relative">
-          <Navbar.Brand href="#home" className="me-lg-3">
-            <Image src={logo} />
-          </Navbar.Brand>
-
-          <Navbar.Collapse id="navbar-default-primary" className="w-100">
-            <Nav className="navbar-nav-hover align-items-lg-center">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#about">About</Nav.Link>
-              <Nav.Link href="#contact">Contact</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-
-          <Navbar.Toggle aria-controls="navbar-default-primary" />
-        </Container>
-      </Navbar>
+    <NavbarFreelancer></NavbarFreelancer>
       <h1 className="h2 text-center" style={{ marginTop: '20px' }} >Mes Candidatures</h1>
     <Container className="py-4">
       <Row className="justify-content-center">

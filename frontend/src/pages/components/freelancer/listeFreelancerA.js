@@ -77,7 +77,7 @@ const FreelancersList = () => {
                         <td>
                           <div className="d-flex align-items-center" >
                             <Image 
-                              src={freelancer.photo || '/default-profile.png'} 
+                              src={"http://localhost:3000/uploads/"+freelancer.photo || '/default-profile.png'} 
                               roundedCircle 
                               width="50" 
                               height="50" 
@@ -141,11 +141,12 @@ const FreelancersList = () => {
                         </td>
                         <td>
                           <Badge 
-                            bg={freelancer.disponibilite ? "success" : "secondary"} 
+                            bg={freelancer.disponibilite ? "success" : "danger"} 
                             className="badge-lg" 
                             pill={true}
+                            style={{width:"80%"}}
                           >
-                            {freelancer.disponibilite ? 'Disponible' : 'Indisponible'}
+                            {freelancer.disponibilite ? 'Disponible' : 'Non disponible'}
                           </Badge>
                         </td>
                         <td>

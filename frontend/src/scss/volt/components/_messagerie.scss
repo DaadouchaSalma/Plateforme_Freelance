@@ -1,0 +1,114 @@
+/* styles.css */
+.contact-list .list-group-item.active {
+  background-color: #f0f2f5 !important;
+  color: #000 !important;
+  border-left: 3px solid #25d366;
+}
+
+.contact-list .list-group-item:not(.active):hover {
+  background-color: #f5f6f6;
+}
+
+body {
+  font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+  background-color: #eaedf2;
+}
+
+textarea.form-control:focus {
+  box-shadow: none;
+  background-color: #fff;
+}
+/* Style pour les coins supérieurs des bulles */
+.rounded-bottom-4 {
+  border-top-left-radius: 1.5rem !important;
+  border-top-right-radius: 1.5rem !important;
+}
+
+/* Bulle envoyée - coin supérieur droit arrondi */
+.bg-primary.rounded-end {
+  border-top-right-radius: 0.5rem !important;
+}
+
+/* Bulle reçue - coin supérieur gauche arrondi */
+.bg-white.rounded-start {
+  border-top-left-radius: 0.5rem !important;
+}
+/* Assurer que la zone de messages prend tout l'espace disponible */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Zone de messages défilante */
+.message-scroll-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-bottom: 80px; /* Espace pour l'input */
+}
+
+/* Zone d'input fixe */
+.message-input-container {
+  flex-shrink: 0;
+  background: white;
+  border-top: 1px solid #e9edef;
+}
+/* Styles globaux pour la messagerie */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Bulles de message */
+.rounded-bottom-4 {
+  border-top-left-radius: 1.5rem !important;
+  border-top-right-radius: 1.5rem !important;
+}
+
+.bg-primary.rounded-end {
+  border-top-right-radius: 0.5rem !important;
+}
+
+.bg-white.rounded-start {
+  border-top-left-radius: 0.5rem !important;
+}
+
+/* Liste de contacts */
+.contact-list .list-group-item.active {
+  background-color: #f0f2f5 !important;
+  color: #000 !important;
+  border-left: 3px solid #25d366;
+}
+
+.contact-list .list-group-item:not(.active):hover {
+  background-color: #f5f6f6;
+}
+
+/* Zone de texte */
+textarea.form-control {
+  transition: all 0.3s;
+}
+
+textarea.form-control:focus {
+  box-shadow: none;
+  background-color: #fff;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

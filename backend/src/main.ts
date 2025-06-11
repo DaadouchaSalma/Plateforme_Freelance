@@ -10,7 +10,7 @@ async function bootstrap() {
     origin: 'http://localhost:3001',
     credentials: true,
   });
-    app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 })); 
+    app.use(graphqlUploadExpress({ maxFiles: 10 })); 
       app.use('/uploads', express.static(join(__dirname, '..', 'uploads'))); // 👈
 
   await app.listen(process.env.PORT ?? 3000);

@@ -69,7 +69,9 @@ async updateStatutCandidature(
   ): Promise<Candidature> {
     return this.candidatureService.accepterCandidature(id);
   }
-
+  
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('CLIENT')
   @Mutation(() => Candidature)
   async rejeterCandidature(
     @Args('id', { type: () => Int }) id: number,

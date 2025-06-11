@@ -32,7 +32,11 @@ export const REGISTER_FREELANCER = gql`
     $password: String!
     $nom: String!
     $prenom: String!
-    $photo: String!
+    $photo: Upload!
+    $liensProf: [LienProfInput!]!
+    $competences: [Int!]!
+    $niveaux: [String!]!
+    $disponibilite:Boolean!
     $bio: String
   ) {
     registerFreelancer(
@@ -41,11 +45,32 @@ export const REGISTER_FREELANCER = gql`
       nom: $nom
       prenom: $prenom
       photo: $photo
+      liensProf: $liensProf
+      competences: $competences
+      niveaux: $niveaux
+      disponibilite:$disponibilite
       bio: $bio
     ) {
       id
       email
       role
+    }
+  }
+`;
+
+export const GET_CURRENT_FREELANCER = gql`
+  query GetCurrentFreelancer {
+    getCurrentFreelancer {
+      id
+      nom
+      prenom
+      photo
+      bio
+      disponibilite
+      user {
+        id
+        email
+      }
     }
   }
 `;

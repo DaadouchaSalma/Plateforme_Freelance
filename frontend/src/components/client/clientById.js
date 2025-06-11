@@ -16,6 +16,7 @@ import { Col, Row, Card, Image, Button, ListGroup, Tab, Badge, Nav } from '@them
 import Profile1 from "../../assets/img/team/profile-picture-1.jpg";
 import { Navbar, Container } from '@themesberg/react-bootstrap';
 import logo from "../../assets/img/logo/icon+title(small).png";
+import NavbarFreelancer from "../NavbarFreelancer";
 
 export default () => {
     const { id } = useParams();
@@ -41,21 +42,7 @@ export default () => {
 
     return (
         <>
-            <Navbar variant="dark" expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary">
-                <Container className="position-relative">
-                    <Navbar.Brand href="#home" className="me-lg-3">
-                        <Image src={logo} />
-                    </Navbar.Brand>
-                    <Navbar.Collapse id="navbar-default-primary" className="w-100">
-                        <Nav className="navbar-nav-hover align-items-lg-center">
-                            <Nav.Link href="#home">Accueil</Nav.Link>
-                            <Nav.Link href="#about">À propos</Nav.Link>
-                            <Nav.Link href="#contact">Contact</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                    <Navbar.Toggle aria-controls="navbar-default-primary" />
-                </Container>
-            </Navbar>
+           <NavbarFreelancer></NavbarFreelancer>
             
             <br></br>
 

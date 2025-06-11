@@ -7,10 +7,32 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/user/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { existsSync, mkdirSync, createWriteStream } from 'fs';
+import { GraphQLUpload, FileUpload } from 'graphql-upload-minimal';
+import { join } from 'path';
+import { LienProfInput } from 'src/lien-prof/lien-prof.input';
+import { Repository } from 'typeorm';
+import { FreelancerCompetence } from 'src/freelancer-competence/freelancer-competence.entity';
+import { LienProf } from 'src/lien-prof/lien-prof.entity';
+import { Competence } from 'src/competence/competence.entity';
 
 @Resolver()
 export class FreelancerResolver {
-    constructor(private readonly freelancerService: FreelancerService) {}
+    constructor(
+              private readonly freelancerService: FreelancerService,
+        @InjectRepository(LienProf)
+        private readonly lienProfRepository: Repository<LienProf>,
+    
+        @InjectRepository(FreelancerCompetence)
+        private readonly freelancerCompetenceRepository: Repository<FreelancerCompetence>,
+    
+        @InjectRepository(Freelancer)
+        private readonly freelancerRepository: Repository<Freelancer>,
+
+        @InjectRepository(Competence)
+        private readonly competenceRepository: Repository<Competence>
+      ) {}
 
   @Query(() => [Freelancer])
   async allFreelancers(): Promise<Freelancer[]> {
@@ -23,7 +45,7 @@ export class FreelancerResolver {
     return this.freelancerService.findOneById(id);
   }
   
-   @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('FREELANCER')
 @Mutation(() => Freelancer)
 async updateFreelancer(
@@ -53,7 +75,7 @@ async updateFreelancer(
     const uploadDir = join(process.cwd(), 'uploads');
     if (!existsSync(uploadDir)) mkdirSync(uploadDir);
 
-    const uniqueFilename = ${Date.now()}-${filename};
+    const uniqueFilename = `${Date.now()}-${filename}`;
     const filepath = join(uploadDir, uniqueFilename);
 
     await new Promise<void>((resolve, reject) =>

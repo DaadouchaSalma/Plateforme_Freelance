@@ -33,11 +33,21 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Message {
+  id: Int!
+  content: String!
+  sender: User!
+  receiver: User!
+  createdAt: DateTime!
+}
+
 type User {
   id: ID!
   email: String!
   password: String!
   role: String!
+  freelancer: Freelancer
+  client: Client
 }
 
 type Client {
@@ -150,16 +160,19 @@ type DomaineStat {
 type Query {
   allFreelancers: [Freelancer!]!
   freelancerById(id: Int!): Freelancer
+  getCurrentFreelancer: Freelancer
   meFreelancer: Freelancer
   getCompetences: [Competence!]!
   allClients: [Client!]!
   clientById(id: Int!): Client
-  me: Client
+  me: User!
   getOfferById(id: Int!): Offer!
   offers: [Offer!]!
   offersForClient: [Offer!]!
   myCandidatures: [Candidature!]!
   candidaturesByOffre(offreId: Int!): [Candidature!]!
+  getConversation(withUserId: Int!): [Message!]!
+  getAvailableContacts: [User!]!
   getAllCategories: [Categorie!]!
   getMyFeedbacks: [Feedback!]!
   getFeedbacksByUserId(userId: Int!, userType: String!): [Feedback!]!
@@ -185,8 +198,9 @@ type Mutation {
   createCategorie(title: String!): Categorie!
   createFeedback(receiverId: Int!, receiverType: String!, rating: Float!, comment: String!): Feedback!
   login(email: String!, password: String!): String!
-  registerClient(email: String!, password: String!, nom: String!, photo: String!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
-  registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: Upload!, bio: String): User!
+  registerClient(email: String!, password: String!, nom: String!, photo: Upload!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
+  registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: Upload!, liensProf: [LienProfInput!]!, competences: [Int!]!, niveaux: [String!]!, disponibilite: Boolean!, bio: String): User!
+  sendMessage(createMessageInput: CreateMessageInput!): Message!
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -216,3 +230,10 @@ input ExperienceInput {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+
+
+input CreateMessageInput {
+  content: String!
+  receiverId: Int!
+}
+

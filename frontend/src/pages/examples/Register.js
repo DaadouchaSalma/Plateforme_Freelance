@@ -1,44 +1,61 @@
 import React, { useState } from 'react';
+import { useMutation ,useQuery } from '@apollo/client';
 import { Tab, Tabs, Form, Button, Card, Alert, Row, Col,Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faBuilding, faUser, faLink ,faImage,faCommentDots,faGlobe,faMap,faPhoneAlt,faIndustry,faInfoCircle} from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faBuilding, faUser, faLink ,faImage,faCommentDots,faGlobe,faMap,faPhoneAlt,faIndustry,faInfoCircle,faLightbulb,faMapMarkedAlt, faMailBulk } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import logo from "../../assets/img/logo/icon+title(small).png"
 import { Routes } from "../../routes";
+import { REGISTER_FREELANCER } from "../../../src/graphql/mutations/freelancer";
+import { REGISTER_CLIENT } from "../../../src/graphql/mutations/client";
 
-
-
-
-
-const competencesOptions = [
-  { value: 'react', label: 'React' },
-  { value: 'node', label: 'Node.js' },
-  { value: 'graphql', label: 'GraphQL' }
-];
+import { GET_ALL_COMPETENCES } from "../../../src/graphql/queries/getallcompetances";
+import { useHistory } from 'react-router-dom';
 
 const secteursOptions = [
-  { value: 'tech', label: 'Technologie' },
-  { value: 'marketing', label: 'Marketing' }
+  { value: 'Développement logiciel', label: 'Développement logiciel' },
+  { value: 'Marketing digital', label: 'Marketing digital' },
+  { value: 'Design graphique', label: 'Design graphique' },
+  { value: 'Éducation & Formation', label: 'Éducation & Formation' },
+  { value: 'Santé', label: 'Santé' },
+  { value: 'Finance', label: 'Finance' },
 ];
 
 const InscriptionForm = ({ userType }) => {
+  const { loading: loadingComp, error: errorComp, data: dataComp } = useQuery(GET_ALL_COMPETENCES);
+const competencesOptions = dataComp?.getCompetences?.map(c => ({
+  value: c.id,
+  label: c.nom
+})) || [];
+  const [registerFreelancer] = useMutation(REGISTER_FREELANCER);
+  const [registerClient] = useMutation(REGISTER_CLIENT);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
-    entreprise: '',
-    secteurActivite: '',
-    photo:'',
+    photo:undefined,
     bio:'',
     nom: '',
     prenom: '',
-    competences: [],
-    liens: [{ type: '', url: '' }]
-  });
+    competencesNiveaux: [{ competence: '', niveau: '' }],
+    liens: [{ type: '', url: '' }],
 
+    // Champs client
+    entreprise: '',
+    siteweb: '',
+    adresse: '',
+    tel: '',
+    secteurActivite: '',
+    photo_client: undefined,
+    about: '',
+    code_postal:''
+  });
+  const history = useHistory();
   const [errors, setErrors] = useState({});
+  const [error, setError] = useState({});
+
   const [submitted, setSubmitted] = useState(false);
 
   const validate = () => {
@@ -63,12 +80,37 @@ const InscriptionForm = ({ userType }) => {
     if (userType === 'client') {
       if (!formData.entreprise) newErrors.entreprise = 'Entreprise requise';
       if (!formData.secteurActivite) newErrors.secteurActivite = 'Secteur requis';
+      if (!formData.email) newErrors.email = 'Email requis';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email invalide';
+
+    if (!formData.password) newErrors.password = 'Mot de passe requis';
+
+    if (!formData.confirmPassword) newErrors.confirmPassword = 'Confirmation requise';
+    else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+
+    if (!formData.entreprise) newErrors.entreprise = 'Entreprise requise';
+
+    if (!formData.secteurActivite) newErrors.secteurActivite = 'Secteur requis';
+
+    if (!formData.siteweb) newErrors.siteweb = 'Site Web requis';
+
+    if (!formData.adresse) newErrors.adresse = 'Adresse requise';
+
+    if (!formData.tel) newErrors.tel = 'N° Téléphone requis';
+    else if (!/^\+?\d{7,15}$/.test(formData.tel)) newErrors.tel = 'N° Téléphone invalide';
+
+    if (!formData.photo_client) newErrors.photo = 'Photo requise';
+
+    if (!formData.about) newErrors.about = 'Champ À Propos requis';
+
+    if (!formData.code_postal) newErrors.code_postal = 'Code postal requis';
     } else {
       if (!formData.nom) newErrors.nom = 'Nom requis';
       if (!formData.prenom) newErrors.prenom = 'Prénom requis';
-      if (formData.competences.length === 0) {
-        newErrors.competences = 'Au moins une compétence requise';
-      }
+      if (formData.competencesNiveaux.length === 0 || 
+        formData.competencesNiveaux.some(item => !item.competence || !item.niveau)) {
+      newErrors.competences = 'Au moins une compétence avec niveau requis';
+    }
       if (!formData.photo) newErrors.photo = 'Photo requise';
        if (!formData.photo) newErrors.photo = 'Photo requise';
     }
@@ -77,14 +119,127 @@ const InscriptionForm = ({ userType }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; 
+
+  if (file) {
+    setFormData(prev => ({ ...prev, photo: file }));
+  }
+  };
+  const handleFileChange_client = (e) => {
+    const file = e.target.files[0]; 
+
+  if (file) {
+    setFormData(prev => ({ ...prev, photo_client: file }));
+  }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      console.log('Données valides:', {
-        ...formData,
-        userType
+        console.log(formData);
+      
+    if (!validate()) return;
+
+    try {
+    setError(null);
+    if (userType === 'freelancer') {
+      // Préparer les données pour le backend
+        const competences = formData.competencesNiveaux.map(item => Number(item.competence));
+        const niveaux = formData.competencesNiveaux.map(item => item.niveau);
+        // Préparer les liens
+      const liensProf = formData.liens
+        .filter(lien => lien.type && lien.url)
+        .map(lien => ({ type: lien.type, url: lien.url }));
+      const variables = {
+        email: formData.email,
+        password: formData.password,
+        nom: formData.nom,
+        prenom: formData.prenom,
+        photo: formData.photo,
+        liensProf,
+        competences,
+        niveaux,
+        disponibilite:true,
+        bio: formData.bio,
+      };
+
+      console.log('Variables sent to registerFreelancer:', variables);
+      delete variables.competencesNiveaux;
+      const { data } = await registerFreelancer({
+        variables,
+        context: {
+          headers: {
+            'Apollo-Require-Preflight': 'true', 
+          },
+        },
       });
+
+      console.log('Registration successful:', data);
       setSubmitted(true);
+      setFormData({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        entreprise: '',
+        secteurActivite: '',
+        photo: null,
+        bio: '',
+        nom: '',
+        prenom: '',
+        competences: [],
+        liens: [{ type: '', url: '' }]
+      });
+      history.push('/examples/sign-in');
+    }
+    if (userType === 'client') {
+      const clientData = {
+        email: formData.email,
+        password: formData.password,
+        nom: formData.entreprise,           
+        domaine: formData.secteurActivite,
+        siteweb: formData.siteweb,
+        adresse: formData.adresse,
+        tel: formData.tel,
+        photo: formData.photo_client,
+        about: formData.about,
+        codePostal: formData.code_postal,
+      };
+
+      console.log('Données envoyées pour client :', clientData);
+
+      // Appel API ou mutation GraphQL ici (exemple générique)
+      const { data } = await registerClient({
+        variables: clientData,
+        context: {
+          headers: {
+            'Apollo-Require-Preflight': 'true',
+          },
+        },
+      });
+
+      console.log('Inscription client réussie:', data);
+      setSubmitted(true);
+
+      setFormData({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        entreprise: '',
+        secteurActivite: '',
+        siteweb: '',
+        adresse: '',
+        tel: '',
+        photo: null,
+        about: '',
+      });
+
+      history.push('/examples/sign-in');
+    }
+   
+  }catch (error) {
+      console.error('Registration error:', error);
+       setError(error.message || 'An error occurred during registration');
+      // Handle error (show error message to user)
     }
   };
 
@@ -111,7 +266,28 @@ const InscriptionForm = ({ userType }) => {
     newLiens[index][field] = value;
     setFormData(prev => ({ ...prev, liens: newLiens }));
   };
+  const addCompetenceNiveau = () => {
+  setFormData(prev => ({
+    ...prev,
+    competencesNiveaux: [...prev.competencesNiveaux, { competence: '', niveau: '' }]
+  }));
+};
 
+const removeCompetenceNiveau = (index) => {
+  setFormData(prev => ({
+    ...prev,
+    competencesNiveaux: prev.competencesNiveaux.filter((_, i) => i !== index)
+  }));
+};
+
+const updateCompetenceNiveau = (index, field, value) => {
+  setFormData(prev => {
+    const updated = [...prev.competencesNiveaux];
+    updated[index] = { ...updated[index], [field]: value };
+    return { ...prev, competencesNiveaux: updated };
+  });
+};
+  
   if (submitted) {
     return (
       <Alert variant="success" className="text-center">
@@ -120,6 +296,7 @@ const InscriptionForm = ({ userType }) => {
       </Alert>
     );
   }
+  
 
   return (
   <Col xs={12} className="d-flex align-items-center justify-content-center">
@@ -231,10 +408,10 @@ const InscriptionForm = ({ userType }) => {
             </Col>
           </Row>
            <Row className="mb-3">
-            <Col md={6}>
+            <Col md={4}>
               <Form.Group className="mb-3">
                 <Form.Label style={{color :'white' , fontWeight:'bold'}}>
-                  <FontAwesomeIcon icon={faMap} className="me-2" />
+                  <FontAwesomeIcon icon={faMapMarkedAlt} className="me-2" />
                   Adresse
                 </Form.Label>
                 <Form.Control
@@ -249,7 +426,25 @@ const InscriptionForm = ({ userType }) => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-            <Col md={6}>
+            <Col md={4}>
+              <Form.Group className="mb-3">
+                <Form.Label style={{color :'white' , fontWeight:'bold'}}>
+                  <FontAwesomeIcon icon={faMailBulk} className="me-2" />
+                  Code Postal
+                </Form.Label>
+                <Form.Control
+                  name="code_postal"
+                  value={formData.code_postal}
+                  onChange={handleChange}
+                  isInvalid={!!errors.code_postal}
+                  required placeholder="Code Postal"
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.code_postal}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col md={4}>
               <Form.Group className="mb-3">
                 <Form.Label style={{color :'white' , fontWeight:'bold'}}>
                   <FontAwesomeIcon icon={faPhoneAlt} className="me-2" />
@@ -295,9 +490,8 @@ const InscriptionForm = ({ userType }) => {
                 </Form.Label>
                 <Form.Control
                   name="photo_client"
-                  value={formData.photo}
-                  onChange={handleChange}
-                  isInvalid={!!errors.photo}
+                  onChange={handleFileChange_client}
+                  isInvalid={!!errors.photo_client}
                   required type='file'
                 />
                 <Form.Control.Feedback type="invalid">
@@ -376,8 +570,7 @@ const InscriptionForm = ({ userType }) => {
                     <Form.Control
                       name="photo"
                       type="file"
-                      value={formData.photo}
-                      onChange={handleChange}
+                      onChange={handleFileChange}
                       isInvalid={!!errors.photo}
                       required 
                     />
@@ -410,7 +603,7 @@ const InscriptionForm = ({ userType }) => {
                 </Row>
               <Form.Group className="mb-3">
                 <Form.Label style={{color :'white' , fontWeight:'bold'}}>Compétences</Form.Label>
-                <Select
+                {/* <Select
                   isMulti
                   options={competencesOptions}
                   onChange={(options) => 
@@ -420,13 +613,65 @@ const InscriptionForm = ({ userType }) => {
                     }))
                   }
                   className={errors.competences ? 'is-invalid' : ''}
-                />
-                {errors.competences && (
-                  <div className="invalid-feedback d-block">
-                    {errors.competences}
-                  </div>
-                )}
-              </Form.Group>
+                /> */}
+                {formData.competencesNiveaux.map((item, index) => (
+                      <div key={index} className="mb-2 d-flex align-items-center">
+                        <Form.Select
+                          className="me-2"
+                          value={item.competence}
+                          onChange={(e) => updateCompetenceNiveau(index, 'competence', e.target.value)}
+                          isInvalid={!!errors.competences && index === 0}
+                        >
+                          <option value="">Sélectionner une compétence</option>
+                          {competencesOptions.map(opt => (
+                            <option key={opt.value} value={opt.value.toString()}>{opt.label}</option>
+                          ))}
+                        </Form.Select>
+                        
+                        <Form.Select
+                          className="me-2"
+                          value={item.niveau}
+                          onChange={(e) => updateCompetenceNiveau(index, 'niveau', e.target.value)}
+                          isInvalid={!!errors.niveaux && index === 0}
+                        >
+                          <option value="">Niveau</option>
+                          <option value="Débutant">Débutant</option>
+                          <option value="Intermédiaire">Intermédiaire</option>
+                          <option value="Avancé">Avancé</option>
+                          <option value="Expert">Expert</option>
+                        </Form.Select>
+                        
+                        {formData.competencesNiveaux.length > 1 && (
+                          <Button
+                            variant="outline-danger"
+                            onClick={() => removeCompetenceNiveau(index)}
+                          >
+                            ×
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={addCompetenceNiveau}
+                      className="mt-2"
+                    >
+                      + Ajouter une compétence
+                    </Button>
+                    
+                    {errors.competences && (
+                      <div className="invalid-feedback d-block">
+                        {errors.competences}
+                      </div>
+                    )}
+                    {errors.niveaux && (
+                      <div className="invalid-feedback d-block">
+                        {errors.niveaux}
+                      </div>
+                    )}
+                </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label style={{color :'white' , fontWeight:'bold'}}>

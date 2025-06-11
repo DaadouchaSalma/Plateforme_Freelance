@@ -60,9 +60,11 @@ import ajoutOffre from './components/offre/ajoutOffre';
 import listeOffreClient from "./components/offre/listeOffreClient";
 import updateOffre from "./components/offre/updateOffre";
 import listeOffreFreelancer from "./components/offre/listeOffreFreelancer"
+import MessengerLayout from './components/messagerie/MessengerLayout';
 import freelancerProfile from './components/freelancer/freelancerProfile';
 import freelancerUpdate from './components/freelancer/freelancerUpdate';
 import dashboardAdmin from './dashboardNew/dashboardAdmin'
+
 
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
@@ -116,6 +118,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 export default () => (
   <Switch>
+    {/* <RouteWithLoader exact path={Routes.Login.path} component={Signin} /> */}
 
     
     {/* Candidature*/}
@@ -125,8 +128,14 @@ export default () => (
 
      {/* Freelancer */}
      <RouteWithSidebar exact path={Routes.ListFreelancer.path} component={FreelancersList} />
+
+
+    {/* Messagerie */}
+    <RouteWithLoader exact path={Routes.Messagerie.path} component={MessengerLayout} />
+
      <RouteWithSidebar exact path={Routes.FreelancerProfile.path} component={freelancerProfile} />
      <RouteWithLoader exact path={Routes.FreelancerUpdate.path} component={freelancerUpdate} />
+
 
     <RouteWithLoader exact path={Routes.ClientById.path} component={ClientByID} />
     <RouteWithLoader exact path={Routes.Presentation.path} component={Presentation} />
@@ -181,6 +190,7 @@ export default () => (
     <RouteWithLoader exact path={Routes.OffreListeFreelancer.path} component={listeOffreFreelancer} />
     <RouteWithSidebar exact path={Routes.DashboardAdminNew.path} component={dashboardAdmin} />
 
+    
     <Redirect to={Routes.NotFound.path} />
   </Switch>
 );

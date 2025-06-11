@@ -232,6 +232,12 @@ async updateFreelancer(
     const newLien = this.lienProfRepository.create({ ...lien, freelancer });
     await this.lienProfRepository.save(newLien);
   }
+  @UseGuards(JwtAuthGuard)
+      @Query(() => Freelancer, { nullable: true })
+      async getCurrentFreelancer(@CurrentUser() user: User): Promise<Freelancer | null> {
+          const client = await this.freelancerService.findByUserId(user.id);
+          return client;
+      }
 }
 
   // Update competences + niveaux

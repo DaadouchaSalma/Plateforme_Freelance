@@ -20,6 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import logo from "../../../assets/img/logo/icon.png";
+import NavbarFreelancer from "../../../components/NavbarFreelancer";
 moment.locale('fr');
 
 // Requête pour les catégories
@@ -60,6 +61,7 @@ const GET_OFFERS = gql`
 `;
 
 const ListeOffreFreelancer = () => {
+  
   const { loading: catLoading, error: catError, data: catData } = useQuery(GET_CATEGORIES);
   const { loading: offerLoading, error: offerError, data: offerData } = useQuery(GET_OFFERS);
   const history = useHistory();
@@ -104,28 +106,12 @@ const ListeOffreFreelancer = () => {
   };
 
   const handlePostuler = (offerId) => {
-    history.push(`/candidature/${offerId}`);
+    history.push(`/candidature/ajout/${offerId}`);
   };
 
   return (
     <>
-      <Navbar variant="dark" expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary">
-        <Container className="position-relative">
-          <Navbar.Brand href="#home" className="me-lg-3">
-            <Image src={logo} />
-          </Navbar.Brand>
-
-          <Navbar.Collapse id="navbar-default-primary" className="w-100">
-            <Nav className="navbar-nav-hover align-items-lg-center">
-              <Nav.Link href="#home">Accueil</Nav.Link>
-              <Nav.Link href="#about">À propos</Nav.Link>
-              <Nav.Link href="#contact">Contact</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-
-          <Navbar.Toggle aria-controls="navbar-default-primary" />
-        </Container>
-      </Navbar>
+     <NavbarFreelancer></NavbarFreelancer>
       
       <Container className="mt-4">
         {/* Titre professionnel avec phrase d'accroche */}

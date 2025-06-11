@@ -1,7 +1,8 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { Client } from "src/client/client.entity";
 import { Freelancer } from "src/freelancer/freelancer.entity";
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Message } from "src/messages/messages.entity";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 /*export enum UserRole {
 FREELANCER = 'FREELANCER',
@@ -27,10 +28,17 @@ export class User {
  @Column()
   role: string;
 
-
+  @Field(() => Freelancer, { nullable: true })
   @OneToOne(() => Freelancer, (freelancer) => freelancer.user, { nullable: true })
   freelancer: Freelancer;
 
+ @Field(() => Client, { nullable: true })
   @OneToOne(() => Client, (client) => client.user, { nullable: true })
   client: Client;
+
+@OneToMany(() => Message, (msg) => msg.sender)
+sentMessages: Message[];
+
+@OneToMany(() => Message, (msg) => msg.receiver)
+receivedMessages: Message[];
 }

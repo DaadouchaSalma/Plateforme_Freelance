@@ -20,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
 import { ExperienceModule } from './experience/experience.module';
 import { StatsModule } from './stat/stat.module';
 // import { UploadScalar } from './common/scalars/upload.scalar';
+import { MessagesModule } from './messages/messages.module';
 
 
 @Module({
@@ -52,7 +53,9 @@ import { StatsModule } from './stat/stat.module';
   UserModule,
   AuthModule,
   ExperienceModule,
+  MessagesModule,
   StatsModule,
+
 ],
   controllers: [AppController],
   providers: [AppService],

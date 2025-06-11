@@ -126,7 +126,7 @@ const [offerToDelete, setOfferToDelete] = useState(null);
                               variant="outline-primary"
                               size="sm"
                               title="Voir les candidatures"
-                              onClick={() => handleViewCandidates(offer.id)}
+                              onClick={() => history.push(`/candidature/listC/${offer.id}`)}
                               className="me-1"
                             >
                               <Eye />

@@ -242,7 +242,7 @@ const TopFreelancersWidget = ({ title, data }) => {
                 <div className="position-relative me-3">
                   {freelancer.photo ? (
                     <img
-                      src={freelancer.photo}
+                      src={"http://localhost:3000/uploads/"+freelancer.photo}
                       alt={freelancer.prenom}
                       className="rounded-circle shadow-sm"
                       width="48"

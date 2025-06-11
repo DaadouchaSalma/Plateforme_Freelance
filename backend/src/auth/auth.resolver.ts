@@ -17,6 +17,7 @@ import { LienProf } from 'src/lien-prof/lien-prof.entity';
 import { Competence } from 'src/competence/competence.entity';
 import { Int } from '@nestjs/graphql';
 import { LienProfInput } from 'src/lien-prof/lien-prof.input';
+import { LoginResponse } from './login-response.dto';
 
 
 @Resolver()
@@ -41,15 +42,29 @@ export class AuthResolver {
     private readonly competenceRepository: Repository<Competence>,
   ) {}
 
-  @Mutation(() => String)
-  async login(
-    @Args('email') email: string,
-    @Args('password') password: string,
-  ) {
-    const user = await this.authService.validateUser(email, password);
-    const result = await this.authService.login(user);
-    return result.access_token + ' role ' + result.user.role;
-  }
+  // @Mutation(() => String)
+  // async login(
+  //   @Args('email') email: string,
+  //   @Args('password') password: string,
+  // ) {
+  //   const user = await this.authService.validateUser(email, password);
+  //   const result = await this.authService.login(user);
+  //   return result.access_token + ' role ' + result.user.role;
+  // }
+
+  @Mutation(() => LoginResponse)
+async login(
+  @Args('email') email: string,
+  @Args('password') password: string,
+): Promise<LoginResponse> {
+  const user = await this.authService.validateUser(email, password);
+  const result = await this.authService.login(user);
+
+  return {
+    access_token: result.access_token,
+    role: result.user.role,
+  };
+}
 
   //  @Mutation(() => User)
   // async registerClient(

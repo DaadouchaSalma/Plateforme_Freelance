@@ -213,6 +213,3 @@ input ExperienceInput {
   dateFin: String
   description: String
 }
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload

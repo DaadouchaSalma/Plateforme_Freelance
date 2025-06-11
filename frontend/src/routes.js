@@ -1,3 +1,4 @@
+import freelancerProfile from "./pages/components/freelancer/freelancerProfile";
 
 export const Routes = {
     // pages
@@ -56,6 +57,8 @@ export const Routes = {
 
     //Freelancer
     ListFreelancer: { path: "/freelancer/listF" },
+    FreelancerProfile: { path: "/freelancerprofile/:id"},
+    FreelancerUpdate: { path: "/freelancer/update" },
 
   
     //client

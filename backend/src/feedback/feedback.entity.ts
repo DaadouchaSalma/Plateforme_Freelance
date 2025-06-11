@@ -22,16 +22,19 @@ export class Feedback  {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field(() => Freelancer, { nullable: true })
   @ManyToOne(() => Freelancer, { nullable: true })
   senderfreelancer?: Freelancer;
 
+  @Field(() => Client, { nullable: true })
   @ManyToOne(() => Client, { nullable: true })
   senderClient?: Client;
 
-  // Who received the feedback (can be a user or a client)
+  @Field(() => Freelancer, { nullable: true })
   @ManyToOne(() => Freelancer, { nullable: true })
   receiverfreelancer?: Freelancer;
 
+  @Field(() => Client, { nullable: true })
   @ManyToOne(() => Client, { nullable: true })
   receiverClient?: Client;
 }

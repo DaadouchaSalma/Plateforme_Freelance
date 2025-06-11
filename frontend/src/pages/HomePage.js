@@ -60,6 +60,8 @@ import ajoutOffre from './components/offre/ajoutOffre';
 import listeOffreClient from "./components/offre/listeOffreClient";
 import updateOffre from "./components/offre/updateOffre";
 import listeOffreFreelancer from "./components/offre/listeOffreFreelancer"
+import freelancerProfile from './components/freelancer/freelancerProfile';
+import freelancerUpdate from './components/freelancer/freelancerUpdate';
 
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
@@ -122,7 +124,8 @@ export default () => (
 
      {/* Freelancer */}
      <RouteWithSidebar exact path={Routes.ListFreelancer.path} component={FreelancersList} />
-
+     <RouteWithSidebar exact path={Routes.FreelancerProfile.path} component={freelancerProfile} />
+     <RouteWithLoader exact path={Routes.FreelancerUpdate.path} component={freelancerUpdate} />
 
     <RouteWithLoader exact path={Routes.ClientById.path} component={ClientByID} />
     <RouteWithLoader exact path={Routes.Presentation.path} component={Presentation} />

@@ -62,6 +62,7 @@ import updateOffre from "./components/offre/updateOffre";
 import listeOffreFreelancer from "./components/offre/listeOffreFreelancer"
 import freelancerProfile from './components/freelancer/freelancerProfile';
 import freelancerUpdate from './components/freelancer/freelancerUpdate';
+import dashboardAdmin from './dashboardNew/dashboardAdmin'
 
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
@@ -178,6 +179,7 @@ export default () => (
     <RouteWithSidebar exact path={Routes.OffreListeClient.path} component={listeOffreClient} />
     <RouteWithSidebar exact path={Routes.OffreUpdate.path} component={updateOffre} />
     <RouteWithLoader exact path={Routes.OffreListeFreelancer.path} component={listeOffreFreelancer} />
+    <RouteWithSidebar exact path={Routes.DashboardAdminNew.path} component={dashboardAdmin} />
 
     <Redirect to={Routes.NotFound.path} />
   </Switch>

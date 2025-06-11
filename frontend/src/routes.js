@@ -1,4 +1,5 @@
 import freelancerProfile from "./pages/components/freelancer/freelancerProfile";
+import DashboardAdmin from "./pages/dashboard/DashboardAdmin";
 
 export const Routes = {
     // pages
@@ -69,6 +70,7 @@ export const Routes = {
     OffreAjout:{path:"/offre/ajout"},
     OffreListeClient:{path:"/offre/listeClient"},
     OffreUpdate:{path:"/offre/update/:id"},
-    OffreListeFreelancer:{path:"/offre/listeOffreFreelancer"}
+    OffreListeFreelancer:{path:"/offre/listeOffreFreelancer"},
+    DashboardAdminNew:{path:"/dashboard/dashboardAdmin"}
 
 };

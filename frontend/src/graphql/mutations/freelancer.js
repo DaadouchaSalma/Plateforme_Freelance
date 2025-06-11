@@ -104,6 +104,10 @@ export const GET_CURRENT_FREELANCER_QUERY = gql`
       photo
       bio
       disponibilite
+      user {
+        id
+        email
+        }
       FreelancerCompetences {
         niveau
         competence {
@@ -126,7 +130,11 @@ export const REGISTER_FREELANCER = gql`
     $password: String!
     $nom: String!
     $prenom: String!
-    $photo: String!
+    $photo: Upload!
+    $liensProf: [LienProfInput!]!
+    $competences: [Int!]!
+    $niveaux: [String!]!
+    $disponibilite:Boolean!
     $bio: String
   ) {
     registerFreelancer(
@@ -135,6 +143,10 @@ export const REGISTER_FREELANCER = gql`
       nom: $nom
       prenom: $prenom
       photo: $photo
+      liensProf: $liensProf
+      competences: $competences
+      niveaux: $niveaux
+      disponibilite:$disponibilite
       bio: $bio
     ) {
       id
@@ -144,6 +156,19 @@ export const REGISTER_FREELANCER = gql`
   }
 `;
 
+export const GET_CURRENT_FREELANCER = gql`
+  query GetCurrentFreelancer {
+    getCurrentFreelancer {
+      id
+      nom
+      prenom
+      photo
+      bio
+      disponibilite
+      user {
+        id
+        email
+}}}`
 export const GET_ALL_COMPETENCES = gql`
   query GetCompetences {
     getCompetences {

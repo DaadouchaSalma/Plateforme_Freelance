@@ -103,7 +103,7 @@ export default () => {
                 <div className="d-flex justify-content-center align-items-center mt-4">
                   <span className="fw-normal" style={{color :'white'}}>
                    Pas encore inscrit ?
-                    <Card.Link as={Link} to={Routes.Signup.path} className="fw-bold" style={{color :'white'}}>
+                    <Card.Link as={Link} to={Routes.Register.path} className="fw-bold" style={{color :'white'}}>
                       {` Créez un compte `}
                     </Card.Link>
                   </span>

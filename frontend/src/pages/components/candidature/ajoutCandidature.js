@@ -1,19 +1,32 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, } from "react";
+import { useHistory ,useParams} from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxOpen, faCartArrowDown, faChartPie, faChevronDown, faClipboard, faCommentDots, faFileAlt, faPlus, faRocket, faStore } from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faCartArrowDown, faChartPie, faChevronDown, faClipboard, faCommentDots, faFileAlt, faPlus, faRocket, faStore,faBriefcase, faUser  } from '@fortawesome/free-solid-svg-icons';
 import { ChoosePhotoWidget, ProfileCardWidget } from "../../../components/Widgets";
 import { faBell, faCog, faEnvelopeOpen, faSearch, faSignOutAlt, faUserShield } from "@fortawesome/free-solid-svg-icons";
 import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
+import { 
+  faCheckCircle, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import { Col, Row, Card, Form, Button, InputGroup, Nav, Image, Navbar, Dropdown, Container, ListGroup } from '@themesberg/react-bootstrap';
+import { Badge,Toast,Col, Row, Card, Form, Button, InputGroup, Nav, Image, Navbar, Dropdown, Container, ListGroup } from '@themesberg/react-bootstrap';
 import logo from "../../../assets/img/logo/icon+title(small).png"
 import Profile3 from "../../../assets/img/team/profile-picture-3.jpg";
 import { CREATE_CANDIDATURE } from "../../../graphql/mutations/candidature";
+import NavbarFreelancer from "../../../components/NavbarFreelancer";
 
 export default () => {
+const { offreId } = useParams();
+const history = useHistory();
+const [showToast, setShowToast] = useState(false);
+const [toastMessage, setToastMessage] = useState("");
+const [toastVariant, setToastVariant] = useState("success");
+  const validStartDate = (current) => {
+    return current.isSameOrAfter(moment(), "day");
+  };
+ 
  const [experiences, setExperiences] = useState([
     { companyName: "", projectName: "", startDate: "", endDate: "", description: "" }
   ]);
@@ -33,28 +46,46 @@ const prepareExperiences = experiences.map((exp) => ({
   dateDebut: exp.startDate ? new Date(exp.startDate).toISOString() : null,
   dateFin: exp.endDate ? new Date(exp.endDate).toISOString() : null,
   description: exp.description
-}));
+})
+);
+
 
 
 
   const handleSubmit = async (e) => {
   e.preventDefault();
-
   const input = {
     motivation,
     statut: "En attente", 
     dateApplication: new Date().toISOString(),
-    offerId: 1, 
+    offerId:parseInt(offreId, 10),
     experiences: prepareExperiences.filter(exp => 
       exp.nomSociete && exp.nomProjet && exp.dateDebut
     )
   };
+
   try {
     const { data } = await createCandidature({ variables: { input } });
     console.log('Candidature créée :', data);
-    // Afficher un message ou rediriger
+   
+    // Afficher le toast de succès
+    setToastMessage("Votre candidature a été envoyée avec succès !");
+    setToastVariant("success");
+    setShowToast(true);
+    
+    // Réinitialiser le formulaire si nécessaire
+    setMotivation("");
+    setExperiences([{ companyName: "", projectName: "", startDate: "", endDate: "", description: "" }]);
+
+     setTimeout(() => {
+      history.push("/offre/listeOffreFreelancer");
+    }, 500);
   } catch (error) {
     console.error('Erreur lors de la soumission :', error);
+     // Afficher le toast d'erreur
+    setToastMessage("Erreur lors de l'envoi de la candidature : " + error.message);
+    setToastVariant("danger");
+    setShowToast(true);
   }
 };
 
@@ -65,23 +96,24 @@ const prepareExperiences = experiences.map((exp) => ({
 
   return (
     <>
-      <Navbar variant="dark" expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary">
-        <Container className="position-relative">
-          <Navbar.Brand href="#home" className="me-lg-3">
-            <Image src={logo} />
-          </Navbar.Brand>
-
-          <Navbar.Collapse id="navbar-default-primary" className="w-100">
-            <Nav className="navbar-nav-hover align-items-lg-center">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#about">About</Nav.Link>
-              <Nav.Link href="#contact">Contact</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-
-          <Navbar.Toggle aria-controls="navbar-default-primary" />
-        </Container>
-      </Navbar>
+     <NavbarFreelancer></NavbarFreelancer>
+      <Toast style={{position: 'fixed', top: '4px', right: '20px', zIndex: 9999}}
+        show={showToast} 
+        onClose={() => setShowToast(false)} 
+        className={`bg-${toastVariant} text-white my-3`}
+        delay={500} 
+        autohide
+      >
+        <Toast.Header className={`text-${toastVariant}`} closeButton={false}>
+          <FontAwesomeIcon icon={toastVariant === "success" ? faCheckCircle : faExclamationTriangle} />
+          <strong className="me-auto ms-2">Notification</strong>
+          <small>{new Date().toLocaleTimeString()}</small>
+          <Button variant="close" size="xs" onClick={() => setShowToast(false)} />
+        </Toast.Header>
+        <Toast.Body>
+          {toastMessage}
+        </Toast.Body>
+      </Toast>
       <h1 className="h2 text-center" style={{ marginTop: '20px' }} >Postuler</h1>
       <Row style={{ marginTop: '20px' }} className="justify-content-md-center">
         <Col xs={12} xl={8}>
@@ -126,6 +158,7 @@ const prepareExperiences = experiences.map((exp) => ({
                             timeFormat={false}
                             value={exp.startDate}
                             onChange={(date) => handleExperienceChange(index, "startDate", date)}
+                             isValidDate={validStartDate}
                              renderInput={(props, openCalendar) => {
                                 const isValidDate = moment(exp.startDate).isValid();
                                 return (
@@ -138,6 +171,7 @@ const prepareExperiences = experiences.map((exp) => ({
                                       value={isValidDate ? moment(exp.startDate).format("MM/DD/YYYY") : ""}
                                       placeholder="Date De Début"
                                       onFocus={openCalendar}
+                                     
                                     />
                                   </InputGroup>
                                 );
@@ -152,7 +186,7 @@ const prepareExperiences = experiences.map((exp) => ({
                             value={exp.endDate}
                             onChange={(date) => handleExperienceChange(index, "endDate", date)}
                             renderInput={(props, openCalendar) => {
-                              const isValidDate = moment(exp.endDate).isValid();
+                              const isValidDate = moment(exp.endDate).isValid() && moment(exp.endDate)>=moment(exp.startDate);
                               return (
                                 <InputGroup>
                                   <InputGroup.Text>
@@ -205,6 +239,7 @@ const prepareExperiences = experiences.map((exp) => ({
           </Card>
         </Col>
       </Row>
+      
     </>
   );
 };

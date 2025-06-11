@@ -2,8 +2,12 @@ import freelancerProfile from "./pages/components/freelancer/freelancerProfile";
 import DashboardAdmin from "./pages/dashboard/DashboardAdmin";
 
 export const Routes = {
+
+    //messagerie
+    Messagerie:{path:"/messagerie/msg"},
     // pages
     Presentation: { path: "/" },
+    // Login:{path :"/"},
     DashboardOverview: { path: "/dashboard/overview" },
     DashboardAdmin: { path: "/dashboard/admin" },
     Transactions: { path: "/transactions" },
@@ -12,7 +16,7 @@ export const Routes = {
     BootstrapTables: { path: "/tables/bootstrap-tables" },
     Billing: { path: "/examples/billing" },
     Invoice: { path: "/examples/invoice" },
-    Signin: { path: "/examples/sign-in" },
+    Signin: { path: "/examples/sign-in"},
     Signup: { path: "/examples/sign-up" },
     Register: { path: "/examples/register" },
     ForgotPassword: { path: "/examples/forgot-password" },
@@ -52,9 +56,9 @@ export const Routes = {
 
 
     //Candidature 
-    AjoutCandidature: { path: "/candidature/ajout" },
+    AjoutCandidature: { path: "/candidature/ajout/:offreId" },
     ListCandidatureF: { path: "/candidature/listF" },
-    ListCandidatureC: { path: "/candidature/listC" },
+    ListCandidatureC: { path: "/candidature/listC/:offreId" },
 
     //Freelancer
     ListFreelancer: { path: "/freelancer/listF" },
@@ -71,6 +75,9 @@ export const Routes = {
     OffreListeClient:{path:"/offre/listeClient"},
     OffreUpdate:{path:"/offre/update/:id"},
     OffreListeFreelancer:{path:"/offre/listeOffreFreelancer"},
+
     DashboardAdminNew:{path:"/dashboard/dashboardAdmin"}
 
+
+    
 };

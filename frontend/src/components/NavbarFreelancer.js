@@ -14,7 +14,7 @@
  import { Badge,Toast,Col, Row, Card, Form, Button, InputGroup, Nav, Image, Navbar, Dropdown, Container, ListGroup } from '@themesberg/react-bootstrap';
  import logo from "../assets/img/logo/icon+title(small).png"
 //  import Profile3 from "../../../assets/img/team/profile-picture-3.jpg";
- import {GET_CURRENT_FREELANCER} from "../graphql/mutations/freelancer"
+ import {GET_CURRENT_FREELANCER_QUERY} from "../graphql/mutations/freelancer"
  
  
  export default () => {
@@ -26,11 +26,11 @@ const history = useHistory();
   history.push('/examples/sign-in');           
 };
     
- const { data, loading, error } = useQuery(GET_CURRENT_FREELANCER);
+ const { data, loading, error } = useQuery(GET_CURRENT_FREELANCER_QUERY);
 console.log('data', data);
 console.log('error', error);
-  const freelancer = data?.getCurrentFreelancer;
-  console.log("freelancer",freelancer)
+  const freelancer = data?.meFreelancer;
+  console.log("simsim",freelancer)
   const profilePhoto = freelancer?.photo || null;
   
  return (

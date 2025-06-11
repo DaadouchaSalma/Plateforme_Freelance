@@ -160,7 +160,6 @@ type DomaineStat {
 type Query {
   allFreelancers: [Freelancer!]!
   freelancerById(id: Int!): Freelancer
-  getCurrentFreelancer: Freelancer
   meFreelancer: Freelancer
   getCompetences: [Competence!]!
   allClients: [Client!]!
@@ -171,11 +170,11 @@ type Query {
   offersForClient: [Offer!]!
   myCandidatures: [Candidature!]!
   candidaturesByOffre(offreId: Int!): [Candidature!]!
-  getConversation(withUserId: Int!): [Message!]!
-  getAvailableContacts: [User!]!
   getAllCategories: [Categorie!]!
   getMyFeedbacks: [Feedback!]!
   getFeedbacksByUserId(userId: Int!, userType: String!): [Feedback!]!
+  getConversation(withUserId: Int!): [Message!]!
+  getAvailableContacts: [User!]!
   getStats: Stats!
   getOffresParCategorie: [CategorieStats!]!
   getTopFreelancers: [TopFreelancerStat!]!
@@ -185,7 +184,7 @@ type Query {
 }
 
 type Mutation {
-  updateFreelancer(nom: String, prenom: String, photo: Upload, bio: String, disponibilite: Boolean, liensProf: [LienProfInput!], competences: [Int!], niveaux: [String!]): Freelancer!
+  updateFreelancer(nom: String, prenom: String, photo: String, bio: String, disponibilite: Boolean): Freelancer!
   createCompetence(nom: String!): Competence!
   updateClient(nom: String, photo: String, about: String, adresse: String, codePostal: String, tel: String, siteweb: String, domaine: String): Client!
   createOffer(title: String!, description: String!, budget: Float!, startDate: String!, endDate: String!, status: String!, competenceIds: [Int!]!, categorieId: Int!): Offer!
@@ -201,15 +200,6 @@ type Mutation {
   registerClient(email: String!, password: String!, nom: String!, photo: Upload!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
   registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: Upload!, liensProf: [LienProfInput!]!, competences: [Int!]!, niveaux: [String!]!, disponibilite: Boolean!, bio: String): User!
   sendMessage(createMessageInput: CreateMessageInput!): Message!
-}
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
-
-input LienProfInput {
-  id: Int
-  type: String!
-  url: String!
 }
 
 input MinimalCandidatureInput {
@@ -231,9 +221,13 @@ input ExperienceInput {
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
+input LienProfInput {
+  id: Int
+  type: String!
+  url: String!
+}
 
 input CreateMessageInput {
   content: String!
   receiverId: Int!
 }
-

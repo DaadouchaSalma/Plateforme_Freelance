@@ -104,6 +104,10 @@ export const GET_CURRENT_FREELANCER_QUERY = gql`
       photo
       bio
       disponibilite
+      user {
+        id
+        email
+        }
       FreelancerCompetences {
         niveau
         competence {
@@ -164,7 +168,7 @@ export const GET_CURRENT_FREELANCER = gql`
       user {
         id
         email
-}}}
+}}}`
 export const GET_ALL_COMPETENCES = gql`
   query GetCompetences {
     getCompetences {

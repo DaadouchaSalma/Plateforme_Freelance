@@ -20,10 +20,24 @@ export default () => {
 
   const [login, { loading, error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      const token = data.login;
-      localStorage.setItem("token", token); 
-      history.push("/dashboard/overview");  
-    },
+    const { access_token, role } = data.login;
+
+    localStorage.setItem("token", access_token);
+    localStorage.setItem("role", role); // facultatif si tu veux le garder
+
+    if (role === "FREELANCER") {
+      history.push("/offre/listeOffreFreelancer");
+    } else if (role === "CLIENT") {
+      history.push("/offre/listeClient");
+    } else if (role === "ADMIN") {
+      history.push("/dashboard/dashboardAdmin");
+    } else {
+      history.push("/"); // fallback
+    }
+  },
+  onError: (error) => {
+    console.error('Login error details:', error.graphQLErrors, error.networkError);
+  }
   });
 
   const handleSubmit = async (e) => {

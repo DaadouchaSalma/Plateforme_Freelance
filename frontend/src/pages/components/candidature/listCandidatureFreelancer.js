@@ -116,7 +116,7 @@ const MyCandidatures = () => {
                         <Badge
                           bg={statusColors[candidature.statut] || "secondary"}
                           className="badge-lg"
-                          style={{width : '50%'}}
+                          style={{width : '60%'}}
                         >
                           <FontAwesomeIcon
                             icon={statusIcons[candidature.statut] || faClock}

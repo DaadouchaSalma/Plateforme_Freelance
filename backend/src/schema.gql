@@ -121,6 +121,11 @@ type Freelancer {
   user: User!
 }
 
+type LoginResponse {
+  access_token: String!
+  role: String!
+}
+
 type Stats {
   clients: Int!
   freelancers: Int!
@@ -196,7 +201,7 @@ type Mutation {
   createCandidature(input: MinimalCandidatureInput!): Candidature!
   createCategorie(title: String!): Categorie!
   createFeedback(receiverId: Int!, receiverType: String!, rating: Float!, comment: String!): Feedback!
-  login(email: String!, password: String!): String!
+  login(email: String!, password: String!): LoginResponse!
   registerClient(email: String!, password: String!, nom: String!, photo: Upload!, adresse: String!, about: String!, codePostal: String!, tel: String!, siteweb: String!, domaine: String!): User!
   registerFreelancer(email: String!, password: String!, nom: String!, prenom: String!, photo: Upload!, liensProf: [LienProfInput!]!, competences: [Int!]!, niveaux: [String!]!, disponibilite: Boolean!, bio: String): User!
   sendMessage(createMessageInput: CreateMessageInput!): Message!

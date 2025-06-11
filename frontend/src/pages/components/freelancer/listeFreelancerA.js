@@ -28,7 +28,7 @@ import {
   faLinkedin
 } from "@fortawesome/free-brands-svg-icons";
 
-const FreelancersList = () => {
+export const FreelancersList = () => {
   const { loading, error, data } = useQuery(GET_ALL_FREELANCERS);
 
   if (loading) return <p>Chargement en cours...</p>;

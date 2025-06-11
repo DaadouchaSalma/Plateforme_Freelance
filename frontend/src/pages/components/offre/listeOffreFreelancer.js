@@ -318,7 +318,7 @@ const ListeOffreFreelancer = () => {
                             <div className="bg-light rounded-circle overflow-hidden d-flex align-items-center justify-content-center me-2" 
                                 style={{ width: '40px', height: '40px', flexShrink: 0 }} >
                               <img 
-                                src={logo}
+                                src={"http://localhost:3000/uploads/"+ offer.client?.photo}
                                 alt={offer.client?.nom || "Client"} 
                                 className="w-100 h-100 object-fit-cover"
                               />

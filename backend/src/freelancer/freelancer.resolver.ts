@@ -91,24 +91,30 @@ async updateFreelancer(
   await this.freelancerRepository.save(freelancer);
 
   // Update professional links
-  if (liensProf) {
-  for (const lien of liensProf) {
-    // If an ID is provided, try to update that specific link
-    if (lien.id) {
-      const existing = await this.lienProfRepository.findOne({
-        where: { id: lien.id, freelancer: { id: freelancer.id } },
-      });
+if (liensProf) {
+  // Get existing links for this freelancer
+  const existingLinks = await this.lienProfRepository.find({
+    where: { freelancer: { id: freelancer.id } }
+  });
 
-      if (existing) {
-        existing.url = lien.url;
-        existing.type = lien.type; // in case type changes too
-        await this.lienProfRepository.save(existing);
+  // Process each link in the input
+  for (const lienInput of liensProf) {
+    // If an ID is provided, try to update that specific link
+    if (lienInput.id) {
+      const existingLink = existingLinks.find(link => link.id === lienInput.id);
+      if (existingLink) {
+        existingLink.url = lienInput.url;
+        existingLink.type = lienInput.type;
+        await this.lienProfRepository.save(existingLink);
         continue;
       }
     }
 
     // Otherwise, add a new link
-    const newLien = this.lienProfRepository.create({ ...lien, freelancer });
+    const newLien = this.lienProfRepository.create({
+      ...lienInput,
+      freelancer
+    });
     await this.lienProfRepository.save(newLien);
   }
 }

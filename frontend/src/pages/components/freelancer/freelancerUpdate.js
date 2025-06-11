@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo  } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useHistory } from "react-router-dom";
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { 
   faGlobe,
@@ -21,6 +22,7 @@ import { GET_ALL_COMPETENCES, GET_CURRENT_FREELANCER_QUERY, UPDATE_FREELANCER } 
 import { Navbar, Container } from '@themesberg/react-bootstrap';
 import logo from "../../../assets/img/logo/icon+title(small).png";
 import { GET_MY_FEEDBACKS } from "../../../graphql/mutations/feedback";
+import NavbarFreelancer from "../../../components/NavbarFreelancer";
 
 
 export default () => {
@@ -37,6 +39,7 @@ export default () => {
     const [newLink, setNewLink] = useState({ type: '', url: '' });
 
     const { loading, error, data, refetch } = useQuery(GET_CURRENT_FREELANCER_QUERY);
+    const history = useHistory();
     const { data: competencesData } = useQuery(GET_ALL_COMPETENCES);
     const [updateFreelancer] = useMutation(UPDATE_FREELANCER);
     const freelancer = data?.meFreelancer;
@@ -78,6 +81,7 @@ export default () => {
         
         if (freelancer.liens) {
             setLinks(freelancer.liens.map(l => ({
+                id: l.id,
                 type: l.type,
                 url: l.url
             })));
@@ -132,6 +136,7 @@ export default () => {
                 competences: competences.map(c => parseInt(c.id)),
                 niveaux: competences.map(c => c.niveau),
                 liensProf: links.map(l => ({
+                    id: l.id,
                     type: l.type,
                     url: l.url
                 }))
@@ -162,21 +167,7 @@ export default () => {
 
     return (
         <>
-        <Navbar variant="dark" expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary">
-                <Container className="position-relative">
-                    <Navbar.Brand href="#home" className="me-lg-3">
-                        <Image src={logo} />
-                    </Navbar.Brand>
-                    <Navbar.Collapse id="navbar-default-primary" className="w-100">
-                        <Nav className="navbar-nav-hover align-items-lg-center">
-                            <Nav.Link href="#home">Accueil</Nav.Link>
-                            <Nav.Link href="#about">À propos</Nav.Link>
-                            <Nav.Link href="#contact">Contact</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                    <Navbar.Toggle aria-controls="navbar-default-primary" />
-                </Container>
-            </Navbar>
+        <NavbarFreelancer></NavbarFreelancer>
             
             <br></br>
             <div className="d-flex justify-content-end me-4" style={{ marginTop: "30px" }}>
@@ -267,7 +258,7 @@ export default () => {
   )}
 </div>
 
-                                    <Button variant="primary" className="w-100" style={{ marginTop: '20px' }}>
+                                    <Button variant="primary" className="w-100" style={{ marginTop: '20px', cursor: 'pointer' }} onClick={() => history.push(`/messagerie/msg`)} >
                                         <FontAwesomeIcon icon={faEnvelope} className="me-2" />
                                         Envoyer un message
                                     </Button>
@@ -456,7 +447,7 @@ export default () => {
                     }
 
                     return (
-                      <ListGroup.Item key={index} className="px-0 py-1 border-0">
+                      <ListGroup.Item key={lien.id || index} className="px-0 py-1 border-0">
                         <a 
                           href={lien.url} 
                           target="_blank" 

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { useQuery, useMutation } from "@apollo/client";
@@ -26,6 +27,7 @@ export default () => {
         skip: !id,
     });
     const freelancer = data?.freelancerById;
+    console.log("photo: ", freelancer)
 
     const [showToast, setShowToast] = useState(false);
         const [toastMessage, setToastMessage] = useState('');
@@ -123,6 +125,7 @@ export default () => {
 
     if (loading) return <p>Chargement...</p>;
     if (error) return <p>Erreur lors du chargement du freelancer: {error.message}</p>;
+    const history = useHistory();
 
     return (
         <>
@@ -146,7 +149,7 @@ export default () => {
                         <Col xs={12} className="d-flex flex-column flex-md-row gap-4 mb-4">
                             {/* Profile Card - Fixed Height */}
                             <Card className="text-center flex-grow-1" style={{ 
-        height: '280px',
+        height: '320px',
         marginTop: '70px',  // Half of the image height (150px/2)
         paddingTop: '75px',  // Compensate for the negative margin
         position: 'relative',
@@ -205,7 +208,7 @@ style={{ height: '26px', padding: '4px 12px',
             </div>
             
             <div className="mt-auto">
-                <Button variant="primary" className="w-100">
+                <Button variant="primary" className="w-100" style={{ cursor: 'pointer' }} onClick={() => history.push(`/messagerie/msg`)}>
                     <FontAwesomeIcon icon={faEnvelope} className="me-2" />
                     Envoyer un message
                 </Button>
@@ -214,7 +217,7 @@ style={{ height: '26px', padding: '4px 12px',
     </Card>
                         
                         {/* Contact Info Card - Matches Profile Card Height */}
-                        <Card className="flex-grow-1" style={{ height: '320px', marginTop: '40px', width: '425px' }}>
+                        <Card className="flex-grow-1" style={{ height: '320px', marginTop: '70px', width: '425px' }}>
                           <Card.Body className="d-flex flex-column p-3" style={{ height: '100%' }}>
                             <h5 className="mb-3">
                               <FontAwesomeIcon icon={faAddressCard} className="me-2 text-primary" />

@@ -169,7 +169,7 @@ type Query {
   getCompetences: [Competence!]!
   allClients: [Client!]!
   clientById(id: Int!): Client
-  me: User!
+  getCurrentClient: Client
   getOfferById(id: Int!): Offer!
   offers: [Offer!]!
   offersForClient: [Offer!]!
@@ -178,6 +178,7 @@ type Query {
   getAllCategories: [Categorie!]!
   getMyFeedbacks: [Feedback!]!
   getFeedbacksByUserId(userId: Int!, userType: String!): [Feedback!]!
+  me: User!
   getConversation(withUserId: Int!): [Message!]!
   getAvailableContacts: [User!]!
   getStats: Stats!

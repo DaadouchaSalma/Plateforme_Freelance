@@ -311,7 +311,7 @@ const ListeOffreFreelancer = () => {
               <Row>
                 {filteredOffers.map((offer) => (
                   <Col key={offer.id} className="mb-4">
-                    <Card className="shadow-sm h-100 border-0 rounded-lg overflow-hidden" style={{ width:"750px", cursor: 'pointer'}} onClick={() => history.push(`/clientprofile/${offer.client?.id}`)} >
+                    <Card className="shadow-sm h-100 border-0 rounded-lg overflow-hidden" style={{ width:"750px" }}>
                       <Card.Body>
                         <div className="d-flex justify-content-between align-items-start mb-3">
                           <div className="d-flex align-items-center">
@@ -321,6 +321,7 @@ const ListeOffreFreelancer = () => {
                                 src={logo}
                                 alt={offer.client?.nom || "Client"} 
                                 className="w-100 h-100 object-fit-cover"
+                                style={{ cursor: 'pointer'}} onClick={() => history.push(`/clientprofile/${offer.client?.id}`)} 
                               />
                             </div>
                             <span className="fw-semibold">{offer.client?.nom || "Anonyme"}</span>

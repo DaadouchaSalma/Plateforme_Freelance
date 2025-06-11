@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { GET_CLIENT_BY_ID_QUERY } from "../../graphql/mutations/client";
@@ -125,6 +126,7 @@ export default () => {
 
     if (loading) return <p>Chargement...</p>;
     if (error) return <p>Erreur lors du chargement du client: {error.message}</p>;
+    const history = useHistory();
 
     return (
         <>
@@ -207,7 +209,7 @@ style={{ height: '26px', padding: '4px 12px',
             </div>
             
             <div className="mt-auto">
-                <Button variant="primary" className="w-100">
+                <Button variant="primary" className="w-100" style={{ cursor: 'pointer' }} onClick={() => history.push(`/messagerie/msg`)}>
                     <FontAwesomeIcon icon={faEnvelope} className="me-2" />
                     Envoyer un message
                 </Button>
